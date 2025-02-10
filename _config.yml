@@ -28,7 +28,7 @@ url: "https://SebastianVFugmann.github.io" # the base hostname & protocol for yo
 # github_username:  jekyll
 
 # Build settings
-theme: minima
+remote_theme: mmistakes/minimal-mistakes
 plugins:
   - jekyll-feed
 
