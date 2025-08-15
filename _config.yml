@@ -7,53 +7,88 @@
 #
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you:
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
 
+# Site Identity
 title: Sebastian Vestergaard Fugmann - CV
-# email: sf15006@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
-  This website is for the CV of Sebastian Vestergaard Fugmann.
-  I have created this website to improve my standing with 
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://SebastianVFugmann.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-# github_username:  jekyll
+email: sf15006@gmail.com
+description: >-
+  Professional CV website for Sebastian Vestergaard Fugmann, 
+  IT consultant and software developer showcasing experience, 
+  skills, and projects.
+url: "https://SebastianVFugmann.github.io"
+github_username: SebastianVFugmann
 
-# Use Minimal Mistakes via Remote Theme
-remote_theme: "mmistakes/minimal-mistakes"
+# Theme Configuration
+remote_theme: mmistakes/minimal-mistakes
+minimal_mistakes_skin: default # Professional appearance
+search: true # Enables site search functionality
 
-plugins:
-  - jekyll-remote-theme
-  - jekyll-feed
-  - jekyll-include-cache
+# Build Settings
+markdown: kramdown
+permalink: /:categories/:title/ # Clean URL structure
+timezone: Europe/Copenhagen
 
+# Content Processing
 include:
-  - _pages
+  - _pages # Include custom pages directory
 
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+# Plugins - Essential and extended functionality
+plugins:
+  - jekyll-remote-theme # Required for remote theme
+  - jekyll-include-cache # Required by Minimal Mistakes
+  - jekyll-sitemap # SEO - generates sitemap.xml
+  - jekyll-feed # Creates RSS feed
+  - jekyll-paginate # Pagination for blog-style content
+  - jekyll-gist # Embed GitHub gists
+  - jemoji # Emoji support in markdown
+
+# Author Profile - Displayed in sidebar
+author:
+  name: "Sebastian Vestergaard Fugmann"
+  avatar: "/assets/images/profile-photo.jpg"
+  bio: "IT Consultant & Software Developer"
+  location: "Denmark"
+  email: "sf15006@gmail.com"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/SebastianVFugmann"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/sebastian-fugmann-ab224a226/"
+    - label: "Website"
+      icon: "fas fa-fw fa-link"
+      url: "https://SebastianVFugmann.github.io"
+
+# Footer Configuration
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/SebastianVFugmann"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/in/yourprofile"
+
+# Page Layout Defaults
+defaults:
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true # Shows author sidebar on all pages
+
+# Exclude from processing
+# These files/folders won't be processed by Jekyll
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
