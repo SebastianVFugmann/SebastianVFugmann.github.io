@@ -60,10 +60,6 @@ author:
       icon: "fas fa-fw fa-link"
       url: "https://SebastianVFugmann.github.io"
 
-# Header Configuration
-head_scripts:
-  - https://kit.fontawesome.com/your-kit-id.js # For Font Awesome that loads the footer images
-
 # Footer Configuration
 footer:
   links:
