@@ -2,7 +2,7 @@
 layout: single
 title: "Career Timeline"
 permalink: /career/
-author_profile: true
+author_profile: false
 ---
 
 # Professional Career

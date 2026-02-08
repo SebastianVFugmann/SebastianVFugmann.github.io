@@ -2,7 +2,7 @@
 layout: single
 title: "Sebastian Vestergaard Fugmann"
 subtitle: "IT Consultant & Software Developer"
-author_profile: true
+author_profile: false
 ---
 
 Welcome to my professional portfolio. I'm an IT consultant and software developer based in Denmark, passionate about creating innovative solutions and sharing knowledge through code.
