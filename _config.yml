@@ -60,6 +60,9 @@ author:
       icon: "fas fa-fw fa-link"
       url: "https://SebastianVFugmann.github.io"
 
+head_scripts:
+  - /assets/css/timeline.css
+
 # Footer Configuration
 footer:
   links:
@@ -78,6 +81,36 @@ defaults:
     values:
       layout: single
       author_profile: true # Shows author sidebar on all pages
+  - scope:
+      path: "_career"
+      type: career
+    values:
+      layout: career-item
+  - scope:
+      path: "_accomplishments"
+      type: accomplishments
+    values:
+      layout: accomplishment-item
+  - scope:
+      path: "_accomplishments/projects"
+      type: accomplishments
+    values:
+      layout: accomplishment-item
+      category: "project
+  - scope:
+      path: "_accomplishments/certifications"
+      type: accomplishments
+    values:
+      layout: accomplishment-item
+      category: "certification"
+
+collections:
+  career:
+    output: true
+    permalink: /:collection/:name/
+  accomplishments:
+    output: true
+    permalink: /accomplishments/:name/
 
 # Exclude from processing
 # These files/folders won't be processed by Jekyll
