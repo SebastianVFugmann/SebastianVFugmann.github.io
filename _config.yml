@@ -68,9 +68,6 @@ author:
     - label: "Website"
       icon: "fas fa-fw fa-link"
       url: "https://SebastianVFugmann.github.io"
-
-head_scripts:
-  - /assets/css/timeline.css
   
 # Footer Configuration
 footer:
