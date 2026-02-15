@@ -7,31 +7,31 @@
 #
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-
+  
 # Site Identity
 title: Sebastian Vestergaard Fugmann - CV
 email: sf15006@gmail.com
 description: >-
-  Professional CV website for Sebastian Vestergaard Fugmann, 
-  IT consultant and software developer showcasing experience, 
+  Professional CV website for Sebastian Vestergaard Fugmann,
+  IT consultant and software developer showcasing experience,
   skills, and projects.
 url: "https://SebastianVFugmann.github.io"
 github_username: SebastianVFugmann
-
+  
 # Theme Configuration
 remote_theme: mmistakes/minimal-mistakes
 minimal_mistakes_skin: default # Professional appearance
 search: true # Enables site search functionality
-
+  
 # Build Settings
 markdown: kramdown
 permalink: /:categories/:title/ # Clean URL structure
 timezone: Europe/Copenhagen
-
+  
 # Content Processing
 include:
   - _pages # Include custom pages directory
-
+  
 # Plugins - Essential and extended functionality
 plugins:
   - jekyll-remote-theme # Required for remote theme
@@ -41,7 +41,16 @@ plugins:
   - jekyll-paginate # Pagination for blog-style content
   - jekyll-gist # Embed GitHub gists
   - jemoji # Emoji support in markdown
-
+  
+# Collections
+collections:
+  career:
+    output: true
+    permalink: /:collection/:name/
+  accomplishments:
+    output: true
+    permalink: /accomplishments/:name/
+  
 # Author Profile - Displayed in sidebar
 author:
   name: "Sebastian Vestergaard Fugmann"
@@ -62,7 +71,7 @@ author:
 
 head_scripts:
   - /assets/css/timeline.css
-
+  
 # Footer Configuration
 footer:
   links:
@@ -71,8 +80,8 @@ footer:
       url: "https://github.com/SebastianVFugmann"
     - label: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
-      url: "https://linkedin.com/in/yourprofile"
-
+      url: "https://www.linkedin.com/in/sebastian-fugmann-ab224a226/"
+  
 # Page Layout Defaults
 defaults:
   - scope:
@@ -96,22 +105,14 @@ defaults:
       type: accomplishments
     values:
       layout: accomplishment-item
-      category: "project
+      category: "project"
   - scope:
       path: "_accomplishments/certifications"
       type: accomplishments
     values:
       layout: accomplishment-item
       category: "certification"
-
-collections:
-  career:
-    output: true
-    permalink: /:collection/:name/
-  accomplishments:
-    output: true
-    permalink: /accomplishments/:name/
-
+  
 # Exclude from processing
 # These files/folders won't be processed by Jekyll
 exclude:
