@@ -4,11 +4,9 @@ source "https://rubygems.org"
 # Use GitHub Pages gem
 gem "github-pages", group: :jekyll_plugins
 
-# Theme
-gem "jekyll-remote-theme" # Keep this for remote theme support
-
 # Jekyll plugins group
 group :jekyll_plugins do
+  gem "jekyll-remote-theme" # Required for remote theme support
   gem "jekyll-paginate"
   gem "jekyll-feed"
   gem "jekyll-include-cache" # Required by Minimal Mistakes theme
