@@ -1,5 +1,5 @@
 ---
-layout: single
+layout: home
 title: "Sebastian Vestergaard Fugmann"
 subtitle: "IT Consultant & Software Developer"
 author_profile: false
