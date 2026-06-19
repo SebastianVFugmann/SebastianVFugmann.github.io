@@ -1,0 +1,83 @@
+---
+layout: default
+---
+
+{% include base_path %}
+
+<div id="main" role="main">
+  {% include sidebar.html %}
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    {% if page.title %}
+      <meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">
+    {% endif %}
+
+    <div class="page__inner-wrap">
+
+      <header>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <h1 id="page-title" class="page__title" itemprop="headline" style="margin: 0;">
+            {{ page.title }}
+            {% if page.company %}
+              <span style="font-weight: normal; color: var(--global-link-color, #0092ca);">@ {{ page.company }}</span>
+            {% endif %}
+          </h1>
+
+          {% if page.company_logo %}
+            <img src="{{ page.company_logo }}"
+                 alt="{% if page.company %}{{ page.company }} logo{% else %}Company logo{% endif %}"
+                 style="height: 48px; width: auto; object-fit: contain; flex-shrink: 0;">
+          {% endif %}
+        </div>
+
+        <div class="career-item__meta" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.85em; color: #6f777d;">
+
+          {% if page.date_start %}
+            <span class="career-item__dates">
+              <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+              {{ page.date_start }}
+              &ndash;
+              {% if page.date_end %}{{ page.date_end }}{% else %}Present{% endif %}
+            </span>
+          {% endif %}
+
+          {% if page.location %}
+            <span class="career-item__location">
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+              {{ page.location }}
+            </span>
+          {% endif %}
+
+          {% if page.employment_type %}
+            <span class="career-item__type">
+              <i class="fas fa-briefcase" aria-hidden="true"></i>
+              {{ page.employment_type }}
+            </span>
+          {% endif %}
+
+        </div>
+
+        {% if page.tags and page.tags.size > 0 %}
+          <div class="career-item__tags" style="margin-bottom: 1.5rem;">
+            {% for tag in page.tags %}
+              <span style="display: inline-block; background: #f2f3f3; border-radius: 3px; padding: 0.15em 0.6em; margin: 0.2em; font-size: 0.8em;">{{ tag }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </header>
+
+      <section class="page__content" itemprop="text">
+        {{ content }}
+      </section>
+
+      <footer class="page__meta">
+        {% if page.tags and page.tags.size > 0 %}
+          {% include tag-list.html %}
+        {% endif %}
+      </footer>
+
+    </div>
+  </article>
+
+</div>
