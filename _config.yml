@@ -46,7 +46,7 @@ plugins:
 collections:
   career:
     output: true
-    permalink: /:collection/:name/
+    permalink: /career/:name/
   accomplishments:
     output: true
     permalink: /accomplishments/:name/
