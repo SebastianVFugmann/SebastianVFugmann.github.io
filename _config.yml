@@ -15,7 +15,7 @@ description: >-
   Professional CV website for Sebastian Vestergaard Fugmann,
   IT consultant and software developer showcasing experience,
   skills, and projects.
-url: "https://SebastianVFugmann.github.io"
+url: "https://sebastianvfugmann.github.io"
 github_username: SebastianVFugmann
   
 # Theme Configuration
@@ -67,7 +67,7 @@ author:
       url: "https://www.linkedin.com/in/sebastian-fugmann-ab224a226/"
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      url: "https://SebastianVFugmann.github.io"
+      url: "https://sebastianvfugmann.github.io"
   
 # Footer Configuration
 footer:
