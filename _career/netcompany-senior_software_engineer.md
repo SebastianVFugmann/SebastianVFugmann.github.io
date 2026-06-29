@@ -4,8 +4,8 @@ company: "Netcompany"
 company_url: "https://netcompany.com/"
 company_logo: "/assets/images/logos/netcompany-logotype-darkgreen-RGB.svg"
 location: "Copenhagen, Denmark"
-date_start: "Jan 2026"
-date_end: ""       # Remove this line or leave blank for "Present"
+start_date: 2026-01-01
+end_date:        # Remove this line or leave blank for "Present"
 employment_type: "Full-time"
 tags:
   - Salesforce Sales Cloud

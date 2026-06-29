@@ -4,8 +4,8 @@ company: "Company Name"
 company_url: "https://company.com"
 company_logo: "/assets/images/logos/acme.png"
 location: "City, Country"
-date_start: "Jan 2020"
-date_end: "Mar 2023"       # Remove this line or leave blank for "Present"
+start_date: 2020-01-01
+end_date: 2021-06-01       # Remove this line or leave blank for "Present"
 employment_type: "Full-time" # e.g. Full-time, Part-time, Freelance, Contract
 tags:
   - Python
