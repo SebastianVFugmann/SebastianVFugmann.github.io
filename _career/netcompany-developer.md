@@ -29,6 +29,7 @@ tags:
 - Was part of a maintenance team support a variaty of Salesforce CRM & CLM solutions and a custom .NET solution.
 - Acted as the front facing figure towards customers, handling customer relations, project planning, and support.
 - Partook in architectural discussions and implementation of new features.
+- Managed minor releases.
 
 ## Accomplishments
 
@@ -38,7 +39,7 @@ tags:
 
 ## Tech Stack
 
-**Backend:** Python (REST APIs via FastAPI), SQL Server Management Studio (schema design, query optimisation)
+**Backend:** C# & Apex (REST APIs, backend functionality), SQL Server Management Studio (schema design, query optimisation)
 
 **Frontend:** HTML, CSS, JavaScript, React (component-based UIs, state management)
 
