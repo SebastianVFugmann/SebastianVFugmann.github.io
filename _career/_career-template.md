@@ -1,6 +1,7 @@
 ---
 title: "Job Title"
 company: "Company Name"
+company_url: "https://company.com"
 company_logo: "/assets/images/logos/acme.png"
 location: "City, Country"
 date_start: "Jan 2020"
@@ -12,7 +13,7 @@ tags:
   - Docker
 ---
 
-Write a description of the role here. This supports full Markdown.
+*Context line: Write a brief description of the role here.*
 
 ## Responsibilities
 
@@ -23,3 +24,11 @@ Write a description of the role here. This supports full Markdown.
 
 - Reduced build time by 40% by ...
 - Delivered X project on time under Y constraints ...
+
+## Tech Stack
+
+**Backend:** Python (REST APIs via FastAPI), PostgreSQL (schema design, query optimisation)
+
+**Infrastructure:** AWS ECS (multi-service orchestration), Terraform (full IaC ownership), S3
+
+**Observability:** Datadog (dashboards, alerting), custom Python logging pipeline
