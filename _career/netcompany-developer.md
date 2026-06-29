@@ -19,7 +19,6 @@ tags:
   - JavaScript
   - CSS
   - Git
-  - Azure
   - Azure DevOps
 ---
 
