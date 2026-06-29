@@ -4,8 +4,8 @@ company: "Netcompany"
 company_url: "https://netcompany.com/"
 company_logo: "/assets/images/logos/netcompany-logotype-darkgreen-RGB.svg"
 location: "Copenhagen, Denmark"
-date_start: "Aug 2023"
-date_end: "Dec 2025" 
+start_date: 2023-08-01
+end_date: 2025-12-31
 employment_type: "Full-time"
 tags:
   - Salesforce Sales Cloud
