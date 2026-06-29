@@ -31,13 +31,11 @@ tags:
 - Acted as the front facing figure towards customers, handling customer relations, project planning, and support.
 - Partook in architectural discussions and implementation of new features.
 
-
 ## Accomplishments
 
 - Was called in to support a larger implemntation project, where I quickly got the necessary understanding for the project, resulting in quickly added value.
 - Provided technical expertise in a larger tender.
 - Implemented a large scale GDPR & privacy feature in a Salesforce CRM solution.
-
 
 ## Tech Stack
 
