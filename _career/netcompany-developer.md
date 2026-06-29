@@ -1,25 +1,48 @@
 ---
 title: "Developer"
 company: "Netcompany"
-company_logo: "/assets/images/logos/acme.png"
+company_url: "https://netcompany.com/"
+company_logo: "/assets/images/logos/netcompany-logotype-darkgreen-RGB.svg"
 location: "Copenhagen, Denmark"
 date_start: "Aug 2023"
 date_end: "Dec 2025" 
 employment_type: "Full-time"
 tags:
-  - Python
-  - AWS
-  - Docker
+  - Salesforce Sales Cloud
+  - Salesforce Marketing Cloud
+  - Salesforce Data Cloud
+  - Apex
+  - C#
+  - .NET 6.0
+  - React
+  - HTML
+  - JavaScript
+  - CSS
+  - Git
+  - Azure
+  - Azure DevOps
 ---
 
-Write a description of the role here. This supports full Markdown.
+*Worked as a developer primarly in Netcompany's Application Services (APS) department while providing support to other projects when necessary.*
 
 ## Responsibilities
 
-- Led development of ...
-- Collaborated with ...
+- Was part of a maintenance team support a variaty of Salesforce CRM & CLM solutions and a custom .NET solution.
+- Acted as the front facing figure towards customers, handling customer relations, project planning, and support.
+- Partook in architectural discussions and implementation of new features.
 
-## Achievements
 
-- Reduced build time by 40% by ...
-- Delivered X project on time under Y constraints ...
+## Accomplishments
+
+- Was called in to support a larger implemntation project, where I quickly got the necessary understanding for the project, resulting in quickly added value.
+- Provided technical expertise in a larger tender.
+- Implemented a large scale GDPR & privacy feature in a Salesforce CRM solution.
+
+
+## Tech Stack
+
+**Backend:** Python (REST APIs via FastAPI), SQL Server Management Studio (schema design, query optimisation)
+
+**Frontend:** HTML, CSS, JavaScript, React (component-based UIs, state management)
+
+**Observability:** Splunk (dashboards, alerting, logging), JFrog (vulnerability scanning)
