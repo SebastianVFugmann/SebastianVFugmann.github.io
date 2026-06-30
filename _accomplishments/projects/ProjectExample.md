@@ -1,7 +1,7 @@
 ---
 title: "Led Digital Transformation Project"
 type: "project"
-date: 2023-11-20
+accomplishment_date: 2023-11-20
 organization: "Netcompany"
 project_value: "€2.5M"
 team_size: 12
