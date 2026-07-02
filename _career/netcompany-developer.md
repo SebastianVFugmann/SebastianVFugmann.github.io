@@ -4,7 +4,7 @@ company: "Netcompany"
 company_url: "https://netcompany.com/"
 company_logo: "/assets/images/logos/netcompany-logotype-darkgreen-RGB.svg"
 location: "Copenhagen, Denmark"
-start_date: 2023-08-01
+date: 2023-08-01
 end_date: 2025-12-31
 employment_type: "Full-time"
 tags:
