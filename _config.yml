@@ -28,6 +28,8 @@ markdown: kramdown
 permalink: /:categories/:title/ # Clean URL structure
 timezone: Europe/Copenhagen
   
+collections_dir: _collections
+
 # Content Processing
 include:
   - _pages # Include custom pages directory
@@ -44,12 +46,15 @@ plugins:
   
 # Collections
 collections:
-  career:
+  positions:
     output: true
-    permalink: /career/:name/
-  accomplishments:
+    permalink: /positions/:name/
+  certifications:
     output: true
-    permalink: /accomplishments/:name/
+    permalink: /certifications/:name/
+  projects:
+    output: true
+    permalink: /projects/:name/
   
 # Author Profile - Displayed in sidebar
 author:
@@ -88,27 +93,20 @@ defaults:
       layout: single
       author_profile: true # Shows author sidebar on all pages
   - scope:
-      path: "_career"
-      type: career
+      path: "_positions"
+      type: positions
     values:
-      layout: career-item
+      layout: position-item
   - scope:
-      path: "_accomplishments"
-      type: accomplishments
+      path: "_certifications"
+      type: certifications
     values:
-      layout: accomplishment-item
+      layout: certification-item
   - scope:
-      path: "_accomplishments/projects"
-      type: accomplishments
+      path: "_projects"
+      type: projects
     values:
-      layout: accomplishment-item
-      category: "project"
-  - scope:
-      path: "_accomplishments/certifications"
-      type: accomplishments
-    values:
-      layout: accomplishment-item
-      category: "certification"
+      layout: project-item
   
 # Exclude from processing
 # These files/folders won't be processed by Jekyll
