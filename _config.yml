@@ -27,7 +27,9 @@ search: true # Enables site search functionality
 markdown: kramdown
 permalink: /:categories/:title/ # Clean URL structure
 timezone: Europe/Copenhagen
-  
+
+# Collections Directory
+# Nests all collection folders (including _posts) under _collections/
 collections_dir: _collections
 
 # Content Processing
