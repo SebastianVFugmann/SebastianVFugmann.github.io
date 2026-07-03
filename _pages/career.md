@@ -21,111 +21,100 @@ classes: wide
     </div>
   </div>
 
-  {% assign career_items = site.career | sort: 'start_date' | reverse %}
-  {% assign accomplishments = site.accomplishments | sort: 'accomplishment_date' | reverse %}
+  {% assign career_items = site.positions %}
+  {% assign certification_items = site.certifications %}
+  {% assign project_items = site.projects %}
+  {% assign all_items = career_items | concat: certification_items | concat: project_items | sort: 'date' | reverse %}
 
-  <div class="dual-timeline">
-    <!-- Career Lane (Left) -->
-    <div class="timeline-lane career-lane">
-      <div class="lane-header">
-        <h3>Career Positions</h3>
-      </div>
-      <div class="timeline-line career-line"></div>
+  <div class="single-timeline">
+    <div class="timeline-line"></div>
 
-      {% for position in career_items %}
-        <div class="timeline-item career-item" data-date="{{ position.start_date }}">
+    {% for item in all_items %}
+      {% if item.end_date %}
+        {% comment %} This is a career item {% endcomment %}
+        <div class="timeline-item career-item" data-date="{{ item.date }}">
           <div class="timeline-marker career-marker"></div>
           <div class="timeline-content career-content">
             <div class="item-type career-type">Position</div>
-            <h3>{{ position.title }}</h3>
-            <h4>{{ position.company }}</h4>
-            <div class="location">{{ position.location }}</div>
+            <h3>{{ item.title }}</h3>
+            <h4>{{ item.company }}</h4>
+            <div class="location">{{ item.location }}</div>
             <p class="timeline-date">
-              {{ position.start_date | date: "%b %Y" }}
-              {% if position.end_date %} - {{ position.end_date | date: "%b %Y" }}
+              {{ item.start_date | date: "%b %Y" }}
+              {% if item.end_date %} - {{ item.end_date | date: "%b %Y" }}
               {% else %} - Present
               {% endif %}
             </p>
             <div class="content-preview">
-              {{ position.content | strip_html | truncatewords: 20 }}
+              {{ item.content | strip_html | truncatewords: 20 }}
             </div>
-            {% if position.skills %}
+            {% if item.skills %}
               <div class="skills">
-                {% for skill in position.skills limit: 4 %}
+                {% for skill in item.skills limit: 4 %}
                   <span class="skill-tag career-skill">{{ skill }}</span>
                 {% endfor %}
-                {% if position.skills.size > 4 %}
-                  <span class="skill-tag career-skill">+{{ position.skills.size | minus: 4 }} more</span>
+                {% if item.skills.size > 4 %}
+                  <span class="skill-tag career-skill">+{{ item.skills.size | minus: 4 }} more</span>
                 {% endif %}
               </div>
             {% endif %}
           </div>
         </div>
-      {% endfor %}
-    </div>
-
-    <!-- Accomplishments Lane (Right) -->
-    <div class="timeline-lane accomplishments-lane">
-      <div class="lane-header">
-        <h3>Key Accomplishments</h3>
-      </div>
-      <div class="timeline-line accomplishments-line"></div>
-
-      {% for accomplishment in accomplishments %}
-        <div class="timeline-item accomplishment-item {{ accomplishment.type }}-item" data-date="{{ accomplishment.accomplishment_date }}">
-          <div class="timeline-marker accomplishment-marker {{ accomplishment.type }}-marker">
-            {% if accomplishment.icon %}
-              <i class="{{ accomplishment.icon }}"></i>
+      {% else %}
+        {% comment %} This is an accomplishment item {% endcomment %}
+        <div class="timeline-item accomplishment-item {{ item.type }}-item" data-date="{{ item.date }}">
+          <div class="timeline-marker accomplishment-marker {{ item.type }}-marker">
+            {% if item.icon %}
+              <i class="{{ item.icon }}"></i>
             {% else %}
               <i class="fas fa-star"></i>
             {% endif %}
           </div>
           <div class="timeline-content accomplishment-content">
-            <div class="item-type {{ accomplishment.type }}-type">{{ accomplishment.type | capitalize }}</div>
-            <h3>{{ accomplishment.title }}</h3>
-            {% if accomplishment.organization %}
-              <h4>{{ accomplishment.organization }}</h4>
+            <div class="item-type {{ item.type }}-type">{{ item.type | capitalize }}</div>
+            <h3>{{ item.title }}</h3>
+            {% if item.organization %}
+              <h4>{{ item.organization }}</h4>
             {% endif %}
-            <p class="timeline-date">{{ accomplishment.accomplishment_date | date: "%b %Y" }}</p>
+            <p class="timeline-date">{{ item.accomplishment_date | date: "%b %Y" }}</p>
 
-            <!-- Type-specific details -->
-            {% if accomplishment.type == 'certification' and accomplishment.credential_id %}
+            {% if item.type == 'certification' and item.credential_id %}
               <div class="cert-details">
-                <span class="credential">ID: {{ accomplishment.credential_id }}</span>
-                {% if accomplishment.expiry_date %}
-                  <span class="expiry">Expires: {{ accomplishment.expiry_date | date: "%b %Y" }}</span>
+                <span class="credential">ID: {{ item.credential_id }}</span>
+                {% if item.expiry_date %}
+                  <span class="expiry">Expires: {{ item.expiry_date | date: "%b %Y" }}</span>
                 {% endif %}
               </div>
             {% endif %}
 
-            {% if accomplishment.type == 'project' %}
+            {% if item.type == 'project' %}
               <div class="project-details">
-                {% if accomplishment.project_value %}
-                  <span class="project-value">Value: {{ accomplishment.project_value }}</span>
+                {% if item.project_value %}
+                  <span class="project-value">Value: {{ item.project_value }}</span>
                 {% endif %}
-                {% if accomplishment.team_size %}
-                  <span class="team-size">Team: {{ accomplishment.team_size }} people</span>
+                {% if item.team_size %}
+                  <span class="team-size">Team: {{ item.team_size }} people</span>
                 {% endif %}
               </div>
             {% endif %}
 
             <div class="content-preview">
-              {{ accomplishment.content | strip_html | truncatewords: 15 }}
+              {{ item.content | strip_html | truncatewords: 15 }}
             </div>
 
-            {% if accomplishment.skills %}
+            {% if item.skills %}
               <div class="skills">
-                {% for skill in accomplishment.skills limit: 3 %}
+                {% for skill in item.skills limit: 3 %}
                   <span class="skill-tag accomplishment-skill">{{ skill }}</span>
                 {% endfor %}
-                {% if accomplishment.skills.size > 3 %}
-                  <span class="skill-tag accomplishment-skill">+{{ accomplishment.skills.size | minus: 3 }}</span>
+                {% if item.skills.size > 3 %}
+                  <span class="skill-tag accomplishment-skill">+{{ item.skills.size | minus: 3 }}</span>
                 {% endif %}
               </div>
             {% endif %}
           </div>
         </div>
-      {% endfor %}
-    </div>
+      {% endif %}
+    {% endfor %}
   </div>
 </div>

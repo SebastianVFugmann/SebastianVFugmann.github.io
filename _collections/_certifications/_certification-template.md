@@ -1,7 +1,7 @@
 ---
 title: "Microsoft Azure Solutions Architect Expert"
 type: "certification"
-accomplishment_date: 2024-03-15
+date: 2024-03-15
 organization: "Microsoft"
 credential_id: "ABC123456"
 expiry_date: 2027-03-15
