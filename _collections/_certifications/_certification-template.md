@@ -2,8 +2,8 @@
 title: "Microsoft Azure Solutions Architect Expert"
 date: 2024-03-15
 organization: "Microsoft"
-credential_id: "ABC123456"
-expiry_date: 2027-03-15
+credential_url: "https://learn.microsoft.com/api/credentials/share/..."
+expiry_date: 2027-03-15 # Remove this line or leave blank for for expiration date
 skills: ["Azure", "Cloud Architecture", "DevOps"]
 icon: "fas fa-certificate"
 ---
