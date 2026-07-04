@@ -12,7 +12,7 @@ classes: wide
     <div class="timeline-legend">
       <div class="legend-item">
         <div class="legend-marker career-marker"></div>
-        <span>Career Positions</span>
+        <span>Job Positions</span>
       </div>
       <div class="legend-item">
         <div class="legend-marker accomplishment-marker"></div>
@@ -30,9 +30,8 @@ classes: wide
     <div class="timeline-line"></div>
 
     {% for item in all_items %}
-      {% if item.end_date %}
-        {% comment %} This is a career item {% endcomment %}
-        <div class="timeline-item career-item" data-date="{{ item.date }}">
+      {% if item.type == 'position' %}
+        <div class="timeline-item position-item" data-date="{{ item.date }}">
           <div class="timeline-marker career-marker"></div>
           <div class="timeline-content career-content">
             <div class="item-type career-type">Position</div>
@@ -40,7 +39,7 @@ classes: wide
             <h4>{{ item.company }}</h4>
             <div class="location">{{ item.location }}</div>
             <p class="timeline-date">
-              {{ item.start_date | date: "%b %Y" }}
+              {{ item.date | date: "%b %Y" }}
               {% if item.end_date %} - {{ item.end_date | date: "%b %Y" }}
               {% else %} - Present
               {% endif %}
