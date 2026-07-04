@@ -99,16 +99,19 @@ defaults:
       type: positions
     values:
       layout: position-item
+      type: "position"
   - scope:
       path: "_certifications"
       type: certifications
     values:
       layout: certification-item
+      type: "certification"
   - scope:
       path: "_projects"
       type: projects
     values:
       layout: project-item
+      type: "project"
   
 # Exclude from processing
 # These files/folders won't be processed by Jekyll
