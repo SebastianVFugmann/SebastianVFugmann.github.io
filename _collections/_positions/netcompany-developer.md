@@ -2,7 +2,7 @@
 title: "Developer"
 company: "Netcompany"
 company_url: "https://netcompany.com/"
-company_logo: "/assets/images/logos/netcompany-logotype-darkgreen-RGB.svg"
+company_logo: "/assets/images/company_logos/netcompany-logotype-darkgreen-RGB.svg"
 location: "Copenhagen, Denmark"
 date: 2023-08-01
 end_date: 2025-12-31
