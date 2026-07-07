@@ -4,338 +4,288 @@
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
 @import "minimal-mistakes";
 
-/* ---------- Timeline palette ---------- */
-/* Centralised so the timeline can be re-themed without hunting for hex codes. */
-$timeline-primary: #FF6359;        // career / position accent
-$timeline-muted: #718886;          // accomplishment accent
-$timeline-heading: #41605E;
-$timeline-subheading: #718886;
-$timeline-body: #666;
-$timeline-faint: #A0AFAF;
-$timeline-bg-chip: #f0f0f0;
+/* ---------- Git-log career timeline ---------- */
 
-$timeline-certification: #4CAF50;
-$timeline-project: #2196F3;
-$timeline-award: #FF9800;
-$timeline-speaking: #9C27B0;
+$gl-paper: #F7F7F5;
+$gl-ink: #14171A;
+$gl-position: #1F8A55;
+$gl-certification: #C98A2B;
+$gl-project: #3457D5;
+$gl-muted: #8A9199;
+$gl-hairline: #E3E4E0;
+$gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 
-.timeline-container {
-  max-width: 900px;
+.gitlog {
+  max-width: 760px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.timeline-header {
-  text-align: center;
-  margin-bottom: 40px;
+.gitlog-header {
+  margin-bottom: 44px;
 }
 
-.timeline-legend {
+.gitlog-branch {
+  font-family: $gl-mono;
+  font-size: 0.85em;
+  color: $gl-muted;
+  margin: 0 0 6px 0;
+
+  .prompt {
+    color: $gl-position;
+    margin-right: 6px;
+  }
+}
+
+.gitlog-header h1 {
+  margin: 0 0 18px 0;
+  color: $gl-ink;
+}
+
+.gitlog-legend {
   display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-family: $gl-mono;
+  font-size: 0.8em;
+  color: $gl-muted;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.9em;
-  color: $timeline-muted;
+  gap: 6px;
 }
 
-.legend-marker {
-  width: 16px;
-  height: 16px;
+.legend-sub {
+  color: $gl-muted;
+  opacity: 0.7;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
+  display: inline-block;
 }
 
-.legend-marker.career-marker {
-  background: $timeline-primary;
-  width: 18px;
-  height: 18px;
-}
+.dot-position { background: $gl-position; }
+.dot-certification { background: $gl-certification; }
+.dot-project { background: $gl-project; }
 
-.legend-marker.accomplishment-marker {
-  background: $timeline-muted;
-  width: 12px;
-  height: 12px;
-}
-
-.timeline-empty {
-  text-align: center;
-  color: $timeline-muted;
+.gitlog-empty {
+  font-family: $gl-mono;
+  color: $gl-muted;
   padding: 40px 0;
 }
 
-/* ---------- Single merged timeline ---------- */
-
-.single-timeline {
+.gitlog-rail {
   position: relative;
-  padding: 40px 0;
   list-style: none;
   margin: 0;
+  padding: 0 0 0 26px;
 }
 
-.timeline-line {
+/* the main branch line runs the full height, straight, on the left */
+.gitlog-rail::before {
+  content: "";
   position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  transform: translateX(-50%);
-  background: linear-gradient(to bottom, $timeline-primary, $timeline-muted 40%, $timeline-muted);
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(to bottom, $gl-position, $gl-hairline 90%);
 }
 
-.timeline-item {
+.gitlog-row {
   position: relative;
-  width: 50%;
-  margin-bottom: 36px;
-  display: flex;
+  margin-bottom: 28px;
 }
 
-/* Side is assigned explicitly in Liquid (side-left / side-right) rather than
-   via :nth-child, so alternation survives future filtering/insertion of items. */
-.timeline-item.side-left {
-  left: 0;
-  justify-content: flex-end;
-  padding-right: 40px;
-}
-
-.timeline-item.side-right {
-  left: 50%;
-  justify-content: flex-start;
-  padding-left: 40px;
-}
-
-.timeline-marker {
+/* commit node sits directly on the main rail */
+.gitlog-node {
   position: absolute;
-  top: 18px;
+  left: -26px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
+  border: 2px solid $gl-paper;
+  z-index: 2;
+}
+
+.node-position {
+  background: $gl-position;
+  box-shadow: 0 0 0 2px $gl-position;
+}
+
+/* accomplishments branch off the main line to their own short spur */
+.accomplishment-row {
+  margin-left: 34px;
+}
+
+.gitlog-branch-line {
+  position: absolute;
+  left: -34px;
+  top: 26px;
+  width: 34px;
+  height: 2px;
+  background: $gl-hairline;
+}
+
+.node-certification,
+.node-project {
+  left: -8px;
+  top: 20px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  z-index: 2;
+  font-size: 0.55em;
+  border: 2px solid $gl-paper;
 }
 
-/* Career = the spine. Bigger, bolder, unmissable. */
-.career-marker {
-  width: 22px;
-  height: 22px;
-  background: $timeline-primary;
-  border: 4px solid white;
-  box-shadow: 0 0 0 3px $timeline-primary;
-  font-size: 0.9em;
-}
+.node-certification { background: $gl-certification; }
+.node-project { background: $gl-project; }
 
-/* Accomplishments = satellites. Smaller, sit closer to the line. */
-.accomplishment-marker {
-  width: 14px;
-  height: 14px;
-  background: $timeline-muted;
-  border: 3px solid white;
-  box-shadow: 0 0 0 2px $timeline-muted;
-  font-size: 0.6em;
-}
-
-.side-left .timeline-marker {
-  right: -11px;
-}
-
-.side-right .timeline-marker {
-  left: -11px;
-}
-
-.side-left .accomplishment-marker {
-  right: -7px;
-}
-
-.side-right .accomplishment-marker {
-  left: -7px;
-}
-
-.timeline-content {
-  background: white;
-  padding: 18px 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 380px;
-  width: 100%;
+.gitlog-card {
   display: block;
+  background: white;
+  border: 1px solid $gl-hairline;
+  border-radius: 6px;
+  padding: 16px 18px;
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
-.timeline-content:hover,
-.timeline-content:focus-visible {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  transform: translateY(-1px);
+.gitlog-card:hover,
+.gitlog-card:focus-visible {
+  border-color: $gl-ink;
+  transform: translateX(2px);
 }
 
-.career-content {
-  border-left: 4px solid $timeline-primary;
+.position-card {
+  border-left: 3px solid $gl-position;
 }
 
-.accomplishment-content {
-  border-left: 4px solid $timeline-muted;
-  padding: 14px 18px;
-}
-
-/* Career cards get slightly more visual weight */
-.career-content h3 {
-  font-size: 1.15em;
-}
-
-.accomplishment-content h3 {
-  font-size: 1em;
-}
-
-.item-type {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.7em;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.career-type {
-  background: $timeline-primary;
-  color: white;
-}
-
-.certification-type {
-  background: $timeline-certification;
-  color: white;
-}
-
-.project-type {
-  background: $timeline-project;
-  color: white;
-}
-
-.award-type {
-  background: $timeline-award;
-  color: white;
-}
-
-.speaking-type {
-  background: $timeline-speaking;
-  color: white;
-}
-
-.timeline-content h3 {
-  margin: 0 0 8px 0;
-  color: $timeline-heading;
-}
-
-.timeline-content h4 {
-  margin: 0 0 4px 0;
-  color: $timeline-subheading;
+.accomplishment-card {
+  padding: 13px 16px;
   font-size: 0.95em;
-  font-weight: 500;
 }
 
-.location {
-  color: $timeline-faint;
-  font-size: 0.85em;
-  margin-bottom: 8px;
-}
+.certification-card { border-left: 3px solid $gl-certification; }
+.project-card { border-left: 3px solid $gl-project; }
 
-.timeline-date {
-  color: $timeline-subheading;
-  font-size: 0.85em;
-  font-weight: 500;
-  margin: 8px 0;
-}
-
-.content-preview {
-  color: $timeline-body;
-  font-size: 0.9em;
-  line-height: 1.4;
-  margin: 12px 0;
-}
-
-.cert-details,
-.project-details {
+.card-meta {
   display: flex;
-  gap: 15px;
+  align-items: center;
+  gap: 10px;
+  font-family: $gl-mono;
+  font-size: 0.75em;
+  color: $gl-muted;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.commit-id {
+  color: $gl-ink;
+}
+
+.card-badge {
+  padding: 1px 7px;
+  border-radius: 10px;
+  color: white;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+.badge-position { background: $gl-position; }
+.badge-certification { background: $gl-certification; }
+.badge-project { background: $gl-project; }
+
+.card-title {
+  margin: 0 0 4px 0;
+  color: $gl-ink;
+}
+
+.card-org {
+  margin: 0 0 8px 0;
+  color: $gl-muted;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.card-location {
+  font-weight: 400;
+}
+
+.card-preview {
+  color: #4A4F54;
+  font-size: 0.9em;
+  line-height: 1.5;
   margin: 8px 0;
-  font-size: 0.8em;
 }
 
-.credential,
-.expiry,
-.project-value,
-.team-size {
-  background: $timeline-bg-chip;
-  padding: 2px 6px;
+.card-details {
+  display: flex;
+  gap: 10px;
+  font-family: $gl-mono;
+  font-size: 0.75em;
+  margin: 6px 0;
+}
+
+.detail-chip {
+  background: $gl-paper;
+  border: 1px solid $gl-hairline;
+  padding: 1px 6px;
   border-radius: 4px;
-  color: $timeline-body;
+  color: $gl-muted;
 }
 
-.skills {
+.card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 12px;
+  gap: 5px;
+  margin-top: 10px;
 }
 
-.skill-tag {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.75em;
-  font-weight: 500;
+.tag {
+  font-family: $gl-mono;
+  font-size: 0.72em;
+  padding: 2px 7px;
+  border-radius: 4px;
 }
 
-.career-skill {
-  background: rgba(255, 99, 89, 0.1);
-  color: $timeline-primary;
-  border: 1px solid rgba(255, 99, 89, 0.3);
+.tag-position {
+  background: rgba(31, 138, 85, 0.08);
+  color: $gl-position;
+  border: 1px solid rgba(31, 138, 85, 0.25);
 }
 
-.accomplishment-skill {
-  background: rgba(113, 136, 134, 0.1);
-  color: $timeline-muted;
-  border: 1px solid rgba(113, 136, 134, 0.3);
+.tag-certification {
+  background: rgba(201, 138, 43, 0.08);
+  color: $gl-certification;
+  border: 1px solid rgba(201, 138, 43, 0.25);
 }
 
-/* ---------- Responsive: single left-aligned column ---------- */
+.tag-project {
+  background: rgba(52, 87, 213, 0.08);
+  color: $gl-project;
+  border: 1px solid rgba(52, 87, 213, 0.25);
+}
 
-@media (max-width: 768px) {
-  .timeline-line {
-    left: 20px;
-    transform: none;
+@media (max-width: 600px) {
+  .gitlog-rail {
+    padding-left: 20px;
   }
-
-  .timeline-item,
-  .timeline-item.side-left,
-  .timeline-item.side-right {
-    width: 100%;
-    left: 0;
-    justify-content: flex-start;
-    padding-left: 50px;
-    padding-right: 0;
+  .accomplishment-row {
+    margin-left: 20px;
   }
-
-  .side-left .timeline-marker,
-  .side-right .timeline-marker {
-    left: 9px;
-    right: auto;
-  }
-
-  .side-left .accomplishment-marker,
-  .side-right .accomplishment-marker {
-    left: 13px;
-    right: auto;
-  }
-
-  .timeline-content {
-    max-width: none;
+  .gitlog-branch-line {
+    width: 20px;
+    left: -20px;
   }
 }
