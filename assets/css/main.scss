@@ -4,6 +4,21 @@
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
 @import "minimal-mistakes";
 
+/* ---------- Timeline palette ---------- */
+/* Centralised so the timeline can be re-themed without hunting for hex codes. */
+$timeline-primary: #FF6359;        // career / position accent
+$timeline-muted: #718886;          // accomplishment accent
+$timeline-heading: #41605E;
+$timeline-subheading: #718886;
+$timeline-body: #666;
+$timeline-faint: #A0AFAF;
+$timeline-bg-chip: #f0f0f0;
+
+$timeline-certification: #4CAF50;
+$timeline-project: #2196F3;
+$timeline-award: #FF9800;
+$timeline-speaking: #9C27B0;
+
 .timeline-container {
   max-width: 900px;
   margin: 0 auto;
@@ -27,7 +42,7 @@
   align-items: center;
   gap: 8px;
   font-size: 0.9em;
-  color: #718886;
+  color: $timeline-muted;
 }
 
 .legend-marker {
@@ -37,15 +52,21 @@
 }
 
 .legend-marker.career-marker {
-  background: #FF6359;
+  background: $timeline-primary;
   width: 18px;
   height: 18px;
 }
 
 .legend-marker.accomplishment-marker {
-  background: #718886;
+  background: $timeline-muted;
   width: 12px;
   height: 12px;
+}
+
+.timeline-empty {
+  text-align: center;
+  color: $timeline-muted;
+  padding: 40px 0;
 }
 
 /* ---------- Single merged timeline ---------- */
@@ -53,6 +74,8 @@
 .single-timeline {
   position: relative;
   padding: 40px 0;
+  list-style: none;
+  margin: 0;
 }
 
 .timeline-line {
@@ -62,7 +85,7 @@
   bottom: 0;
   width: 3px;
   transform: translateX(-50%);
-  background: linear-gradient(to bottom, #FF6359, #718886 40%, #718886);
+  background: linear-gradient(to bottom, $timeline-primary, $timeline-muted 40%, $timeline-muted);
 }
 
 .timeline-item {
@@ -72,15 +95,15 @@
   display: flex;
 }
 
-/* Alternate sides: career items right, accomplishment items left,
-   simply based on order in the merged/sorted list */
-.timeline-item:nth-child(odd) {
+/* Side is assigned explicitly in Liquid (side-left / side-right) rather than
+   via :nth-child, so alternation survives future filtering/insertion of items. */
+.timeline-item.side-left {
   left: 0;
   justify-content: flex-end;
   padding-right: 40px;
 }
 
-.timeline-item:nth-child(even) {
+.timeline-item.side-right {
   left: 50%;
   justify-content: flex-start;
   padding-left: 40px;
@@ -101,9 +124,9 @@
 .career-marker {
   width: 22px;
   height: 22px;
-  background: #FF6359;
+  background: $timeline-primary;
   border: 4px solid white;
-  box-shadow: 0 0 0 3px #FF6359;
+  box-shadow: 0 0 0 3px $timeline-primary;
   font-size: 0.9em;
 }
 
@@ -111,25 +134,25 @@
 .accomplishment-marker {
   width: 14px;
   height: 14px;
-  background: #718886;
+  background: $timeline-muted;
   border: 3px solid white;
-  box-shadow: 0 0 0 2px #718886;
+  box-shadow: 0 0 0 2px $timeline-muted;
   font-size: 0.6em;
 }
 
-.timeline-item:nth-child(odd) .timeline-marker {
+.side-left .timeline-marker {
   right: -11px;
 }
 
-.timeline-item:nth-child(even) .timeline-marker {
+.side-right .timeline-marker {
   left: -11px;
 }
 
-.timeline-item:nth-child(odd) .accomplishment-marker {
+.side-left .accomplishment-marker {
   right: -7px;
 }
 
-.timeline-item:nth-child(even) .accomplishment-marker {
+.side-right .accomplishment-marker {
   left: -7px;
 }
 
@@ -137,17 +160,27 @@
   background: white;
   padding: 18px 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   max-width: 380px;
   width: 100%;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.timeline-content:hover,
+.timeline-content:focus-visible {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
 
 .career-content {
-  border-left: 4px solid #FF6359;
+  border-left: 4px solid $timeline-primary;
 }
 
 .accomplishment-content {
-  border-left: 4px solid #718886;
+  border-left: 4px solid $timeline-muted;
   padding: 14px 18px;
 }
 
@@ -171,74 +204,78 @@
 }
 
 .career-type {
-  background: #FF6359;
+  background: $timeline-primary;
   color: white;
 }
 
 .certification-type {
-  background: #4CAF50;
+  background: $timeline-certification;
   color: white;
 }
 
 .project-type {
-  background: #2196F3;
+  background: $timeline-project;
   color: white;
 }
 
 .award-type {
-  background: #FF9800;
+  background: $timeline-award;
   color: white;
 }
 
 .speaking-type {
-  background: #9C27B0;
+  background: $timeline-speaking;
   color: white;
 }
 
 .timeline-content h3 {
   margin: 0 0 8px 0;
-  color: #41605E;
+  color: $timeline-heading;
 }
 
 .timeline-content h4 {
   margin: 0 0 4px 0;
-  color: #718886;
+  color: $timeline-subheading;
   font-size: 0.95em;
   font-weight: 500;
 }
 
 .location {
-  color: #A0AFAF;
+  color: $timeline-faint;
   font-size: 0.85em;
   margin-bottom: 8px;
 }
 
 .timeline-date {
-  color: #718886;
+  color: $timeline-subheading;
   font-size: 0.85em;
   font-weight: 500;
   margin: 8px 0;
 }
 
 .content-preview {
-  color: #666;
+  color: $timeline-body;
   font-size: 0.9em;
   line-height: 1.4;
   margin: 12px 0;
 }
 
-.cert-details, .project-details {
+.cert-details,
+.project-details {
   display: flex;
   gap: 15px;
   margin: 8px 0;
   font-size: 0.8em;
 }
 
-.credential, .expiry, .project-value, .team-size {
-  background: #f0f0f0;
+.credential,
+.expiry,
+.project-value,
+.team-size {
+  background: $timeline-bg-chip;
   padding: 2px 6px;
   border-radius: 4px;
-  color: #666;
+  color: $timeline-body;
 }
 
 .skills {
@@ -258,13 +295,13 @@
 
 .career-skill {
   background: rgba(255, 99, 89, 0.1);
-  color: #FF6359;
+  color: $timeline-primary;
   border: 1px solid rgba(255, 99, 89, 0.3);
 }
 
 .accomplishment-skill {
   background: rgba(113, 136, 134, 0.1);
-  color: #718886;
+  color: $timeline-muted;
   border: 1px solid rgba(113, 136, 134, 0.3);
 }
 
@@ -277,8 +314,8 @@
   }
 
   .timeline-item,
-  .timeline-item:nth-child(odd),
-  .timeline-item:nth-child(even) {
+  .timeline-item.side-left,
+  .timeline-item.side-right {
     width: 100%;
     left: 0;
     justify-content: flex-start;
@@ -286,14 +323,14 @@
     padding-right: 0;
   }
 
-  .timeline-item:nth-child(odd) .timeline-marker,
-  .timeline-item:nth-child(even) .timeline-marker {
+  .side-left .timeline-marker,
+  .side-right .timeline-marker {
     left: 9px;
     right: auto;
   }
 
-  .timeline-item:nth-child(odd) .accomplishment-marker,
-  .timeline-item:nth-child(even) .accomplishment-marker {
+  .side-left .accomplishment-marker,
+  .side-right .accomplishment-marker {
     left: 13px;
     right: auto;
   }
