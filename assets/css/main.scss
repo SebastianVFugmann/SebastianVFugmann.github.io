@@ -4,7 +4,7 @@
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}";
 @import "minimal-mistakes";
 
-/* ---------- Git-log career timeline ---------- */
+/* ---------- Git branch/merge career timeline ---------- */
 
 $gl-paper: #F7F7F5;
 $gl-ink: #14171A;
@@ -16,13 +16,13 @@ $gl-hairline: #E3E4E0;
 $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 
 .gitlog {
-  max-width: 760px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
 
 .gitlog-header {
-  margin-bottom: 44px;
+  margin-bottom: 36px;
 }
 
 .gitlog-branch {
@@ -57,11 +57,6 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   gap: 6px;
 }
 
-.legend-sub {
-  color: $gl-muted;
-  opacity: 0.7;
-}
-
 .legend-dot {
   width: 9px;
   height: 9px;
@@ -79,107 +74,59 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   padding: 40px 0;
 }
 
+.gitlog-body {
+  position: relative;
+}
+
+.gitlog-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .gitlog-rail {
   position: relative;
   list-style: none;
   margin: 0;
-  padding: 0 0 0 26px;
+  padding: 0;
+  z-index: 1;
 }
 
-/* the main branch line runs the full height, straight, on the left */
-.gitlog-rail::before {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 6px;
-  bottom: 6px;
-  width: 2px;
-  background: linear-gradient(to bottom, $gl-position, $gl-hairline 90%);
-}
-
-.gitlog-row {
+.gl-row {
   position: relative;
   margin-bottom: 28px;
-}
-
-/* commit node sits directly on the main rail */
-.gitlog-node {
-  position: absolute;
-  left: -26px;
-  top: 20px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid $gl-paper;
-  z-index: 2;
-}
-
-.node-position {
-  background: $gl-position;
-  box-shadow: 0 0 0 2px $gl-position;
-}
-
-/* accomplishments branch off the main line to their own short spur */
-.accomplishment-row {
-  margin-left: 34px;
-}
-
-.gitlog-branch-line {
-  position: absolute;
-  left: -34px;
-  top: 26px;
-  width: 34px;
-  height: 2px;
-  background: $gl-hairline;
-}
-
-.node-certification,
-.node-project {
-  left: -8px;
-  top: 20px;
-  width: 16px;
-  height: 16px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 0.55em;
-  border: 2px solid $gl-paper;
 }
 
-.node-certification { background: $gl-certification; }
-.node-project { background: $gl-project; }
+.gl-row[data-type="position"] {
+  justify-content: flex-start;
+}
 
-.gitlog-card {
-  display: block;
+.gl-row:not([data-type="position"]) {
+  justify-content: flex-end;
+}
+
+.gl-card {
+  width: 42%;
   background: white;
   border: 1px solid $gl-hairline;
   border-radius: 6px;
-  padding: 16px 18px;
+  padding: 14px 16px;
+}
+
+.gl-pos { border-left: 3px solid $gl-position; border-radius: 0 6px 6px 0; }
+.gl-certification { border-right: 3px solid $gl-certification; border-radius: 6px 0 0 6px; }
+.gl-project { border-right: 3px solid $gl-project; border-radius: 6px 0 0 6px; }
+
+.gl-link {
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  display: block;
 }
 
-.gitlog-card:hover,
-.gitlog-card:focus-visible {
-  border-color: $gl-ink;
-  transform: translateX(2px);
-}
-
-.position-card {
-  border-left: 3px solid $gl-position;
-}
-
-.accomplishment-card {
-  padding: 13px 16px;
-  font-size: 0.95em;
-}
-
-.certification-card { border-left: 3px solid $gl-certification; }
-.project-card { border-left: 3px solid $gl-project; }
-
-.card-meta {
+.gl-meta {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -190,46 +137,37 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   flex-wrap: wrap;
 }
 
-.commit-id {
-  color: $gl-ink;
-}
-
-.card-badge {
+.gl-badge {
   padding: 1px 7px;
   border-radius: 10px;
   color: white;
   text-transform: lowercase;
-  letter-spacing: 0.02em;
 }
 
 .badge-position { background: $gl-position; }
 .badge-certification { background: $gl-certification; }
 .badge-project { background: $gl-project; }
 
-.card-title {
+.gl-title {
   margin: 0 0 4px 0;
   color: $gl-ink;
 }
 
-.card-org {
+.gl-org {
   margin: 0 0 8px 0;
   color: $gl-muted;
   font-size: 0.9em;
   font-weight: 500;
 }
 
-.card-location {
-  font-weight: 400;
-}
-
-.card-preview {
+.gl-preview {
   color: #4A4F54;
   font-size: 0.9em;
   line-height: 1.5;
   margin: 8px 0;
 }
 
-.card-details {
+.gl-chips {
   display: flex;
   gap: 10px;
   font-family: $gl-mono;
@@ -237,7 +175,7 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   margin: 6px 0;
 }
 
-.detail-chip {
+.gl-chip {
   background: $gl-paper;
   border: 1px solid $gl-hairline;
   padding: 1px 6px;
@@ -245,47 +183,42 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   color: $gl-muted;
 }
 
-.card-tags {
+.gl-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   margin-top: 10px;
 }
 
-.tag {
+.gl-tag {
   font-family: $gl-mono;
   font-size: 0.72em;
   padding: 2px 7px;
   border-radius: 4px;
 }
 
-.tag-position {
-  background: rgba(31, 138, 85, 0.08);
-  color: $gl-position;
-  border: 1px solid rgba(31, 138, 85, 0.25);
-}
+.tag-position { background: rgba(31, 138, 85, 0.08); color: $gl-position; border: 1px solid rgba(31, 138, 85, 0.25); }
+.tag-certification { background: rgba(201, 138, 43, 0.08); color: $gl-certification; border: 1px solid rgba(201, 138, 43, 0.25); }
+.tag-project { background: rgba(52, 87, 213, 0.08); color: $gl-project; border: 1px solid rgba(52, 87, 213, 0.25); }
 
-.tag-certification {
-  background: rgba(201, 138, 43, 0.08);
-  color: $gl-certification;
-  border: 1px solid rgba(201, 138, 43, 0.25);
-}
+@media (max-width: 768px) {
+  .gitlog-svg { display: none; }
 
-.tag-project {
-  background: rgba(52, 87, 213, 0.08);
-  color: $gl-project;
-  border: 1px solid rgba(52, 87, 213, 0.25);
-}
-
-@media (max-width: 600px) {
-  .gitlog-rail {
-    padding-left: 20px;
+  .gl-row,
+  .gl-row[data-type="position"],
+  .gl-row:not([data-type="position"]) {
+    justify-content: flex-start;
   }
-  .accomplishment-row {
-    margin-left: 20px;
+
+  .gl-card {
+    width: 100%;
   }
-  .gitlog-branch-line {
-    width: 20px;
-    left: -20px;
+
+  .gl-pos,
+  .gl-certification,
+  .gl-project {
+    border-left: 3px solid currentColor;
+    border-right: none;
+    border-radius: 0 6px 6px 0;
   }
 }
