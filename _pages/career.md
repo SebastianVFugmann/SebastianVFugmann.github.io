@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var mainLine = ns('line');
     mainLine.setAttribute('x1', mainX); mainLine.setAttribute('x2', mainX);
     mainLine.setAttribute('y1', 0); mainLine.setAttribute('y2', height);
-    mainLine.setAttribute('stroke', 'var(--border)');
+    mainLine.setAttribute('stroke', '#E3E4E0');
     mainLine.setAttribute('stroke-width', 2);
     svg.appendChild(mainLine);
 
