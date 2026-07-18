@@ -108,9 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function ns(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
 
-  // Boundary = midpoint between a row and its immediate neighbor.
-  // dir 'down' -> boundary toward the older row below (branch-out point).
-  // dir 'up'   -> boundary toward the newer row above (merge point).
   function boundaryY(centers, idx, dir) {
     if (dir === 'up') {
       return idx > 0 ? (centers[idx] + centers[idx - 1]) / 2 : centers[idx] - 30;
@@ -167,6 +164,15 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(p);
     }
 
+    function addLine(x1, y1, x2, y2, color) {
+      var l = ns('line');
+      l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+      l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+      l.setAttribute('stroke', color);
+      l.setAttribute('stroke-width', 2);
+      svg.appendChild(l);
+    }
+
     function addDot(x, y, color) {
       var c = ns('circle');
       c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 5);
@@ -174,8 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
-    // Positions: each gets its own short, symmetric bump around its own row,
-    // unless it's the current (no end_date) most recent role, which stays open.
+    // Positions: short symmetric bump around each row; current role stays open.
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
 
@@ -190,17 +195,26 @@ document.addEventListener('DOMContentLoaded', function () {
       addDot(posLaneX, centers[ownRow], COLORS.position);
     });
 
-    // Accomplishments: grouped by consecutive same-month, each group gets one
-    // short bump spanning just its own rows, merging as soon as it clears them.
-    var accRows = rows.map(function (r, i) { return { r: r, i: i }; })
-      .filter(function (o) { return o.r.dataset.type !== 'position'; });
+    // Certifications: no branch — just a dot on main and a straight line out.
+    var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
+      .filter(function (o) { return o.r.dataset.type === 'certification'; });
+
+    certRows.forEach(function (o) {
+      var y = centers[o.i];
+      addDot(mainX, y, COLORS.certification);
+      addLine(mainX, y, accLaneX, y, COLORS.certification);
+    });
+
+    // Projects: still grouped by consecutive same-month, still branch/merge.
+    var projRows = rows.map(function (r, i) { return { r: r, i: i }; })
+      .filter(function (o) { return o.r.dataset.type === 'project'; });
 
     var groups = [];
-    accRows.forEach(function (o) {
+    projRows.forEach(function (o) {
       var month = o.r.dataset.month;
       var last = groups[groups.length - 1];
       if (last && last.month === month) { last.rows.push(o.i); }
-      else groups.push({ month: month, type: o.r.dataset.type, rows: [o.i] });
+      else groups.push({ month: month, rows: [o.i] });
     });
 
     groups.forEach(function (g) {
@@ -208,10 +222,9 @@ document.addEventListener('DOMContentLoaded', function () {
       var topIdx = g.rows[0];
       var bottomY = boundaryY(centers, bottomIdx, 'down');
       var topY = boundaryY(centers, topIdx, 'up');
-      var color = COLORS[g.type] || COLORS.certification;
 
-      addPath(branchPath(mainX, accLaneX, bottomY, topY, false), color, false);
-      g.rows.forEach(function (rowIdx) { addDot(accLaneX, centers[rowIdx], color); });
+      addPath(branchPath(mainX, accLaneX, bottomY, topY, false), COLORS.project, false);
+      g.rows.forEach(function (rowIdx) { addDot(accLaneX, centers[rowIdx], COLORS.project); });
     });
   }
 
