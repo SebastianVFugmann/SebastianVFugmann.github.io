@@ -33,7 +33,7 @@ classes: wide
           {% if item.type == 'position' %}
             {% assign end_epoch = "" %}
             {% if item.end_date %}{% assign end_epoch = item.end_date | date: '%s' %}{% endif %}
-            <li class="gl-row" data-type="position" data-start="{{ start_epoch }}" data-end="{{ end_epoch }}" data-month="{{ month_key }}">
+            <li class="gl-row" data-type="position" data-start="{{ start_epoch }}" data-end="{{ end_epoch }}" data-month="{{ month_key }}" data-company="{{ item.company }}">
               <div class="gl-card gl-pos">
                 <div class="gl-meta">
                   <span class="gl-badge badge-position">position</span>
@@ -193,18 +193,31 @@ document.addEventListener('DOMContentLoaded', function () {
       addDot(laneX, y, color);
     }
 
+    // Positions: consecutive same-company positions (ignoring rows in between
+    // that aren't positions) merge into one branch with multiple commits.
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
 
-    positions.forEach(function (o, idx) {
-      var ownRow = o.i;
-      var bottomY = boundaryY(centers, ownRow, 'down');
-      var ongoing = o.r.dataset.end === '';
-      var open = ongoing && idx === 0;
-      var topY = open ? 0 : boundaryY(centers, ownRow, 'up');
+    var posGroups = [];
+    positions.forEach(function (o) {
+      var company = o.r.dataset.company;
+      var last = posGroups[posGroups.length - 1];
+      if (last && last.company === company) { last.rows.push(o.i); }
+      else posGroups.push({ company: company, rows: [o.i] });
+    });
 
-      addPath(branchPath(mainX, posLaneX, bottomY, topY, open), COLORS.position, open);
-      addCommit(posLaneX, centers[ownRow], COLORS.position, -1);
+    posGroups.forEach(function (g, gi) {
+      var bottomIdx = g.rows[g.rows.length - 1]; // oldest row in the group
+      var topIdx = g.rows[0];                    // newest row in the group
+      var bottomY = boundaryY(centers, bottomIdx, 'down');
+
+      var topRow = rows[topIdx];
+      var isNewestGroup = gi === 0;
+      var ongoing = isNewestGroup && topRow.dataset.end === '';
+      var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up');
+
+      addPath(branchPath(mainX, posLaneX, bottomY, topY, ongoing), COLORS.position, ongoing);
+      g.rows.forEach(function (rowIdx) { addCommit(posLaneX, centers[rowIdx], COLORS.position, -1); });
     });
 
     var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
