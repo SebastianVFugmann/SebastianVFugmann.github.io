@@ -105,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var MAIN_COLOR = '#4F46E5';
   var COLORS = { position: '#1F8A55', certification: '#C98A2B', project: '#3457D5' };
   var RADIUS = 16;
+  var STUB = 40;
 
   function ns(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
 
@@ -180,6 +181,13 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
+    // A "commit": dot on the branch line + a straight stub out to the card.
+    // dir: -1 stub points left (toward position cards), +1 points right (toward acc cards).
+    function addCommit(laneX, y, color, dir) {
+      addDot(laneX, y, color);
+      addLine(laneX, y, laneX + dir * STUB, y, color);
+    }
+
     // Positions: short symmetric bump around each row; current role stays open.
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
@@ -192,20 +200,21 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = open ? 0 : boundaryY(centers, ownRow, 'up');
 
       addPath(branchPath(mainX, posLaneX, bottomY, topY, open), COLORS.position, open);
-      addDot(posLaneX, centers[ownRow], COLORS.position);
+      addCommit(posLaneX, centers[ownRow], COLORS.position, -1);
     });
 
-    // Certifications: no branch — just a dot on main and a straight line out.
+    // Certifications: no branch — dot on main, straight line out to card.
     var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'certification'; });
 
     certRows.forEach(function (o) {
       var y = centers[o.i];
-      addDot(mainX, y, COLORS.certification);
       addLine(mainX, y, accLaneX, y, COLORS.certification);
+      addDot(mainX, y, COLORS.certification);
     });
 
-    // Projects: still grouped by consecutive same-month, still branch/merge.
+    // Projects: grouped by consecutive same-month, still branch/merge.
+    // Every row in the group still gets its own commit (dot + stub).
     var projRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'project'; });
 
@@ -224,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = boundaryY(centers, topIdx, 'up');
 
       addPath(branchPath(mainX, accLaneX, bottomY, topY, false), COLORS.project, false);
-      g.rows.forEach(function (rowIdx) { addDot(accLaneX, centers[rowIdx], COLORS.project); });
+      g.rows.forEach(function (rowIdx) { addCommit(accLaneX, centers[rowIdx], COLORS.project, 1); });
     });
   }
 
