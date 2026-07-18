@@ -102,11 +102,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var svg = document.getElementById('gitlog-svg');
   if (!rail || !svg) return;
 
+  var MAIN_COLOR = '#4F46E5';
   var COLORS = { position: '#1F8A55', certification: '#C98A2B', project: '#3457D5' };
-  var RADIUS = 18;
+  var RADIUS = 16;
 
   function ns(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
 
+  // Boundary = midpoint between a row and its immediate neighbor.
+  // dir 'down' -> boundary toward the older row below (branch-out point).
+  // dir 'up'   -> boundary toward the newer row above (merge point).
   function boundaryY(centers, idx, dir) {
     if (dir === 'up') {
       return idx > 0 ? (centers[idx] + centers[idx - 1]) / 2 : centers[idx] - 30;
@@ -149,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var mainLine = ns('line');
     mainLine.setAttribute('x1', mainX); mainLine.setAttribute('x2', mainX);
     mainLine.setAttribute('y1', 0); mainLine.setAttribute('y2', height);
-    mainLine.setAttribute('stroke', '#E3E4E0');
-    mainLine.setAttribute('stroke-width', 2);
+    mainLine.setAttribute('stroke', MAIN_COLOR);
+    mainLine.setAttribute('stroke-width', 3);
     svg.appendChild(mainLine);
 
     function addPath(d, color, dashed) {
@@ -165,31 +169,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function addDot(x, y, color) {
       var c = ns('circle');
-      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 6);
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 5);
       c.setAttribute('fill', color);
       svg.appendChild(c);
     }
 
+    // Positions: each gets its own short, symmetric bump around its own row,
+    // unless it's the current (no end_date) most recent role, which stays open.
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
 
     positions.forEach(function (o, idx) {
       var ownRow = o.i;
-      var bottomY = centers[ownRow];
-      var nextNewer = positions[idx - 1];
+      var bottomY = boundaryY(centers, ownRow, 'down');
       var ongoing = o.r.dataset.end === '';
+      var open = ongoing && idx === 0;
+      var topY = open ? 0 : boundaryY(centers, ownRow, 'up');
 
-      if (ongoing && idx === 0) {
-        addPath(branchPath(mainX, posLaneX, bottomY, 0, true), COLORS.position, true);
-      } else if (nextNewer) {
-        var topY = boundaryY(centers, nextNewer.i, 'down');
-        addPath(branchPath(mainX, posLaneX, bottomY, topY, false), COLORS.position, false);
-      } else {
-        addPath(branchPath(mainX, posLaneX, bottomY, boundaryY(centers, ownRow, 'up'), false), COLORS.position, false);
-      }
-      addDot(mainX, bottomY, COLORS.position);
+      addPath(branchPath(mainX, posLaneX, bottomY, topY, open), COLORS.position, open);
+      addDot(posLaneX, centers[ownRow], COLORS.position);
     });
 
+    // Accomplishments: grouped by consecutive same-month, each group gets one
+    // short bump spanning just its own rows, merging as soon as it clears them.
     var accRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type !== 'position'; });
 
@@ -204,11 +206,12 @@ document.addEventListener('DOMContentLoaded', function () {
     groups.forEach(function (g) {
       var bottomIdx = g.rows[g.rows.length - 1];
       var topIdx = g.rows[0];
-      var bottomY = centers[bottomIdx];
+      var bottomY = boundaryY(centers, bottomIdx, 'down');
       var topY = boundaryY(centers, topIdx, 'up');
       var color = COLORS[g.type] || COLORS.certification;
+
       addPath(branchPath(mainX, accLaneX, bottomY, topY, false), color, false);
-      g.rows.forEach(function (rowIdx) { addDot(mainX, centers[rowIdx], color); });
+      g.rows.forEach(function (rowIdx) { addDot(accLaneX, centers[rowIdx], color); });
     });
   }
 
