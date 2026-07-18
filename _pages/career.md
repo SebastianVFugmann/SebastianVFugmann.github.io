@@ -145,8 +145,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     var mainX = width / 2;
-    var posLaneX = mainX - 130;
-    var accLaneX = mainX + 130;
+    var CARD_FRAC = 0.36;   // must match $gl-card width in SCSS
+    var GAP_FRAC = 0.05;    // gap between card edge and lane, used for the stub length
+
+    var posCardEdge = width * CARD_FRAC;
+    var posLaneX = posCardEdge + width * GAP_FRAC;
+    var accCardEdge = width * (1 - CARD_FRAC);
+    var accLaneX = accCardEdge - width * GAP_FRAC;
+    var STUB = width * GAP_FRAC;
 
     var mainLine = ns('line');
     mainLine.setAttribute('x1', mainX); mainLine.setAttribute('x2', mainX);
@@ -181,14 +187,12 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
-    // A "commit": dot on the branch line + a straight stub out to the card.
-    // dir: -1 stub points left (toward position cards), +1 points right (toward acc cards).
+    // A commit: dot on the branch lane + a stub reaching exactly to the card edge.
     function addCommit(laneX, y, color, dir) {
-      addDot(laneX, y, color);
       addLine(laneX, y, laneX + dir * STUB, y, color);
+      addDot(laneX, y, color);
     }
 
-    // Positions: short symmetric bump around each row; current role stays open.
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
 
@@ -203,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function () {
       addCommit(posLaneX, centers[ownRow], COLORS.position, -1);
     });
 
-    // Certifications: no branch — dot on main, straight line out to card.
     var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'certification'; });
 
@@ -213,8 +216,6 @@ document.addEventListener('DOMContentLoaded', function () {
       addDot(mainX, y, COLORS.certification);
     });
 
-    // Projects: grouped by consecutive same-month, still branch/merge.
-    // Every row in the group still gets its own commit (dot + stub).
     var projRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'project'; });
 
