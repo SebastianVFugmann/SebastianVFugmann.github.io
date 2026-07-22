@@ -145,14 +145,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     var mainX = width / 2;
-    var CARD_FRAC = 0.36;   // must match $gl-card width in SCSS
-    var GAP_FRAC = 0.05;    // gap between card edge and lane, used for the stub length
+    var CARD_FRAC = 0.36;  // must match $gl-card width in SCSS
+    var GAP_FRAC = 0.05;
 
-    var posCardEdge = width * CARD_FRAC;
-    var posLaneX = posCardEdge + width * GAP_FRAC;
-    var accCardEdge = width * (1 - CARD_FRAC);
-    var accLaneX = accCardEdge - width * GAP_FRAC;
-    var STUB = width * GAP_FRAC;
+    // Lane x now targets the CARD'S OWN CENTER, not a guide beside it —
+    // so the branch line runs straight through the card visually.
+    var posLaneX = (width * CARD_FRAC) / 2;
+    var accLaneX = width - (width * CARD_FRAC) / 2;
+    var certConnectorX = width * (1 - CARD_FRAC) - (width * GAP_FRAC);
 
     var mainLine = ns('line');
     mainLine.setAttribute('x1', mainX); mainLine.setAttribute('x2', mainX);
@@ -187,14 +187,9 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
-    // A commit: dot on the branch lane + a stub reaching exactly to the card edge.
-    function addCommit(laneX, y, color, dir) {
-      addLine(laneX, y, laneX + dir * STUB, y, color);
-      addDot(laneX, y, color);
-    }
-
-    // Positions: consecutive same-company positions (ignoring rows in between
-    // that aren't positions) merge into one branch with multiple commits.
+    // Positions: branch runs through the card column's own center, so it
+    // visually enters the bottom card from below and merges out the top
+    // card's top edge — no separate dot/stub needed, the card is the marker.
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
 
@@ -207,8 +202,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     posGroups.forEach(function (g, gi) {
-      var bottomIdx = g.rows[g.rows.length - 1]; // oldest row in the group
-      var topIdx = g.rows[0];                    // newest row in the group
+      var bottomIdx = g.rows[g.rows.length - 1];
+      var topIdx = g.rows[0];
       var bottomY = boundaryY(centers, bottomIdx, 'down');
 
       var topRow = rows[topIdx];
@@ -217,18 +212,19 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up');
 
       addPath(branchPath(mainX, posLaneX, bottomY, topY, ongoing), COLORS.position, ongoing);
-      g.rows.forEach(function (rowIdx) { addCommit(posLaneX, centers[rowIdx], COLORS.position, -1); });
     });
 
+    // Certifications: unchanged — a spot on main with a straight connector.
     var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'certification'; });
 
     certRows.forEach(function (o) {
       var y = centers[o.i];
-      addLine(mainX, y, accLaneX, y, COLORS.certification);
+      addLine(mainX, y, certConnectorX, y, COLORS.certification);
       addDot(mainX, y, COLORS.certification);
     });
 
+    // Projects: same card-center treatment as positions.
     var projRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'project'; });
 
@@ -247,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = boundaryY(centers, topIdx, 'up');
 
       addPath(branchPath(mainX, accLaneX, bottomY, topY, false), COLORS.project, false);
-      g.rows.forEach(function (rowIdx) { addCommit(accLaneX, centers[rowIdx], COLORS.project, 1); });
     });
   }
 
