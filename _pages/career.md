@@ -109,11 +109,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function ns(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
 
-  function boundaryY(centers, idx, dir) {
+  function boundaryY(centers, idx, dir, rows) {
     if (dir === 'up') {
-      return idx > 0 ? (centers[idx] + centers[idx - 1]) / 2 : centers[idx] - 30;
+      if (idx > 0) return (centers[idx] + centers[idx - 1]) / 2;
+      var halfUp = rows[idx].getBoundingClientRect().height / 2;
+      return centers[idx] - halfUp - RADIUS * 2 - 16;
     }
-    return idx < centers.length - 1 ? (centers[idx] + centers[idx + 1]) / 2 : centers[idx] + 30;
+    if (idx < centers.length - 1) return (centers[idx] + centers[idx + 1]) / 2;
+    var halfDown = rows[idx].getBoundingClientRect().height / 2;
+    return centers[idx] + halfDown + RADIUS * 2 + 16;
   }
 
   function branchPath(mainX, laneX, bottomY, topY, open) {
@@ -204,12 +208,12 @@ document.addEventListener('DOMContentLoaded', function () {
     posGroups.forEach(function (g, gi) {
       var bottomIdx = g.rows[g.rows.length - 1];
       var topIdx = g.rows[0];
-      var bottomY = boundaryY(centers, bottomIdx, 'down');
+      var bottomY = boundaryY(centers, bottomIdx, 'down', rows);
 
       var topRow = rows[topIdx];
       var isNewestGroup = gi === 0;
       var ongoing = isNewestGroup && topRow.dataset.end === '';
-      var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up');
+      var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up', rows);
 
       addPath(branchPath(mainX, posLaneX, bottomY, topY, ongoing), COLORS.position, ongoing);
     });
@@ -239,8 +243,8 @@ document.addEventListener('DOMContentLoaded', function () {
     groups.forEach(function (g) {
       var bottomIdx = g.rows[g.rows.length - 1];
       var topIdx = g.rows[0];
-      var bottomY = boundaryY(centers, bottomIdx, 'down');
-      var topY = boundaryY(centers, topIdx, 'up');
+      var bottomY = boundaryY(centers, bottomIdx, 'down', rows);
+      var topY = boundaryY(centers, topIdx, 'up', rows);
 
       addPath(branchPath(mainX, accLaneX, bottomY, topY, false), COLORS.project, false);
     });
