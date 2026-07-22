@@ -135,6 +135,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var rows = Array.prototype.slice.call(rail.querySelectorAll('.gl-row'));
     if (!rows.length) return;
 
+    // First pass: reserve enough space above/below the rail so the very first
+    // and last card's branch curves have room to bend before hitting the edge.
+    var firstH = rows[0].getBoundingClientRect().height;
+    var lastH = rows[rows.length - 1].getBoundingClientRect().height;
+    var topPad = Math.ceil(firstH / 2 + RADIUS * 2 + 24);
+    var bottomPad = Math.ceil(lastH / 2 + RADIUS * 2 + 24);
+    rail.style.paddingTop = topPad + 'px';
+    rail.style.paddingBottom = bottomPad + 'px';
+
+    // Second pass: everything below measures against the now-padded layout.
     var railRect = rail.getBoundingClientRect();
     var height = rail.offsetHeight;
     var width = body.clientWidth;
