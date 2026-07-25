@@ -12,6 +12,7 @@ classes: wide
     <p class="gitlog-branch"><span class="prompt">$</span> git log --graph --all</p>
     <h1>Career Timeline</h1>
     <div class="gitlog-legend">
+      <span class="legend-item"><span class="legend-dot dot-main"></span>main</span>
       <span class="legend-item"><span class="legend-dot dot-position"></span>position</span>
       <span class="legend-item"><span class="legend-dot dot-certification"></span>certification</span>
       <span class="legend-item"><span class="legend-dot dot-project"></span>project</span>
@@ -35,56 +36,67 @@ classes: wide
             {% if item.end_date %}{% assign end_epoch = item.end_date | date: '%s' %}{% endif %}
             <li class="gl-row" data-type="position" data-start="{{ start_epoch }}" data-end="{{ end_epoch }}" data-month="{{ month_key }}" data-company="{{ item.company }}">
               <div class="gl-card gl-pos">
-                <div class="gl-meta">
-                  <span class="gl-badge badge-position">position</span>
-                  <span class="gl-date">{{ item.date | date: "%b %Y" }}{% if item.end_date %} – {{ item.end_date | date: "%b %Y" }}{% else %} – present{% endif %}</span>
-                </div>
                 <a class="gl-link" href="{{ item.url | relative_url }}">
-                  <h3 class="gl-title">{{ item.title }}</h3>
-                  <h4 class="gl-org">{{ item.company }}{% if item.location %} <span class="gl-location">· {{ item.location }}</span>{% endif %}</h4>
-                  <p class="gl-preview">{{ item.content | strip_html | truncatewords: 20 }}</p>
+                  <div class="gl-meta">
+                    <span class="gl-badge badge-position">position</span>
+                    <span class="gl-date">{{ item.date | date: "%b %Y" }}{% if item.end_date %} – {{ item.end_date | date: "%b %Y" }}{% else %} – present{% endif %}</span>
+                  </div>
+                  <p class="gl-title">{{ item.title }}</p>
+                  <p class="gl-org">{{ item.company }}</p>
                   {% if item.tags %}
-                    <div class="gl-tags">
-                      {% for tag in item.tags limit: 4 %}<span class="gl-tag tag-position">{{ tag }}</span>{% endfor %}
-                      {% if item.tags.size > 4 %}<span class="gl-tag tag-position">+{{ item.tags.size | minus: 4 }}</span>{% endif %}
+                    <div class="gl-tags-compact">
+                      {% for tag in item.tags limit: 3 %}<span class="gl-tag tag-position">{{ tag }}</span>{% endfor %}
                     </div>
                   {% endif %}
+                  <div class="gl-hover-detail">
+                    {% if item.location %}<p class="gl-detail-location">{{ item.location }}</p>{% endif %}
+                    <p class="gl-preview">{{ item.content | strip_html | truncatewords: 24 }}</p>
+                    {% if item.tags.size > 3 %}
+                      <div class="gl-tags">
+                        {% for tag in item.tags offset: 3 %}<span class="gl-tag tag-position">{{ tag }}</span>{% endfor %}
+                      </div>
+                    {% endif %}
+                    <span class="gl-more">Click for full details →</span>
+                  </div>
                 </a>
               </div>
             </li>
           {% else %}
             <li class="gl-row" data-type="{{ item.type }}" data-start="{{ start_epoch }}" data-month="{{ month_key }}">
               <div class="gl-card gl-acc gl-{{ item.type }}">
-                <div class="gl-meta">
-                  <span class="gl-badge badge-{{ item.type }}">{{ item.type }}</span>
-                  <span class="gl-date">{{ item.date | date: "%b %Y" }}</span>
-                </div>
                 <a class="gl-link" href="{{ item.url | relative_url }}">
-                  <h3 class="gl-title">{{ item.title }}</h3>
-                  {% if item.organization %}<h4 class="gl-org">{{ item.organization }}</h4>{% endif %}
-
-                  {% if item.type == 'certification' %}
-                    <div class="gl-chips">
-                      {% if item.credential_id %}<span class="gl-chip">id: {{ item.credential_id }}</span>{% endif %}
-                      {% if item.expiry_date %}<span class="gl-chip">expires {{ item.expiry_date | date: "%b %Y" }}</span>{% endif %}
-                    </div>
-                  {% endif %}
-
-                  {% if item.type == 'project' %}
-                    <div class="gl-chips">
-                      {% if item.project_value %}<span class="gl-chip">value: {{ item.project_value }}</span>{% endif %}
-                      {% if item.team_size %}<span class="gl-chip">team: {{ item.team_size }}</span>{% endif %}
-                    </div>
-                  {% endif %}
-
-                  <p class="gl-preview">{{ item.content | strip_html | truncatewords: 14 }}</p>
-
+                  <div class="gl-meta">
+                    <span class="gl-badge badge-{{ item.type }}">{{ item.type }}</span>
+                    <span class="gl-date">{{ item.date | date: "%b %Y" }}</span>
+                  </div>
+                  <p class="gl-title">{{ item.title }}</p>
+                  {% if item.organization %}<p class="gl-org">{{ item.organization }}</p>{% endif %}
                   {% if item.skills %}
-                    <div class="gl-tags">
+                    <div class="gl-tags-compact">
                       {% for skill in item.skills limit: 3 %}<span class="gl-tag tag-{{ item.type }}">{{ skill }}</span>{% endfor %}
-                      {% if item.skills.size > 3 %}<span class="gl-tag tag-{{ item.type }}">+{{ item.skills.size | minus: 3 }}</span>{% endif %}
                     </div>
                   {% endif %}
+                  <div class="gl-hover-detail">
+                    {% if item.type == 'certification' %}
+                      <div class="gl-chips">
+                        {% if item.credential_id %}<span class="gl-chip">id: {{ item.credential_id }}</span>{% endif %}
+                        {% if item.expiry_date %}<span class="gl-chip">expires {{ item.expiry_date | date: "%b %Y" }}</span>{% endif %}
+                      </div>
+                    {% endif %}
+                    {% if item.type == 'project' %}
+                      <div class="gl-chips">
+                        {% if item.project_value %}<span class="gl-chip">value: {{ item.project_value }}</span>{% endif %}
+                        {% if item.team_size %}<span class="gl-chip">team: {{ item.team_size }}</span>{% endif %}
+                      </div>
+                    {% endif %}
+                    <p class="gl-preview">{{ item.content | strip_html | truncatewords: 20 }}</p>
+                    {% if item.skills.size > 3 %}
+                      <div class="gl-tags">
+                        {% for skill in item.skills offset: 3 %}<span class="gl-tag tag-{{ item.type }}">{{ skill }}</span>{% endfor %}
+                      </div>
+                    {% endif %}
+                    <span class="gl-more">Click for full details →</span>
+                  </div>
                 </a>
               </div>
             </li>
@@ -105,10 +117,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var MAIN_COLOR = '#4F46E5';
   var COLORS = { position: '#1F8A55', certification: '#C98A2B', project: '#3457D5' };
   var RADIUS = 16;
-  var STUB = 40;
+  var CARD_FRAC = 0.36;  // must match $gl-card width in main.scss
+  var GAP_FRAC = 0.05;
 
   function ns(tag) { return document.createElementNS('http://www.w3.org/2000/svg', tag); }
 
+  // Boundary = midpoint between a row and its immediate neighbor (quick
+  // branch-out / merge points). For rows with no neighbor (first/last in
+  // the whole list), clear past that row's own rendered height instead of
+  // guessing a fixed offset, so the curve never cuts through the card.
   function boundaryY(centers, idx, dir, rows) {
     if (dir === 'up') {
       if (idx > 0) return (centers[idx] + centers[idx - 1]) / 2;
@@ -135,8 +152,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var rows = Array.prototype.slice.call(rail.querySelectorAll('.gl-row'));
     if (!rows.length) return;
 
-    // First pass: reserve enough space above/below the rail so the very first
-    // and last card's branch curves have room to bend before hitting the edge.
+    // Reserve enough space above/below the rail so the very first and last
+    // card's branch curves have room to bend before hitting the SVG edge.
     var firstH = rows[0].getBoundingClientRect().height;
     var lastH = rows[rows.length - 1].getBoundingClientRect().height;
     var topPad = Math.ceil(firstH / 2 + RADIUS * 2 + 24);
@@ -144,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
     rail.style.paddingTop = topPad + 'px';
     rail.style.paddingBottom = bottomPad + 'px';
 
-    // Second pass: everything below measures against the now-padded layout.
     var railRect = rail.getBoundingClientRect();
     var height = rail.offsetHeight;
     var width = body.clientWidth;
@@ -159,11 +175,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     var mainX = width / 2;
-    var CARD_FRAC = 0.36;  // must match $gl-card width in SCSS
-    var GAP_FRAC = 0.05;
 
-    // Lane x now targets the CARD'S OWN CENTER, not a guide beside it —
-    // so the branch line runs straight through the card visually.
+    // Lane x targets each card's OWN horizontal center, so the branch line
+    // runs straight through the card visually — entering from below,
+    // merging out the top — rather than beside it with a separate stub.
     var posLaneX = (width * CARD_FRAC) / 2;
     var accLaneX = width - (width * CARD_FRAC) / 2;
     var certConnectorX = width * (1 - CARD_FRAC) - (width * GAP_FRAC);
@@ -201,9 +216,10 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
-    // Positions: branch runs through the card column's own center, so it
-    // visually enters the bottom card from below and merges out the top
-    // card's top edge — no separate dot/stub needed, the card is the marker.
+    // Positions: consecutive same-company positions (ignoring non-position
+    // rows in between) merge into one branch with multiple commits inside
+    // it. Branch runs through each card's own center; the current role, if
+    // it has no end date, stays open with a dashed line to the top (HEAD).
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
 
@@ -228,7 +244,8 @@ document.addEventListener('DOMContentLoaded', function () {
       addPath(branchPath(mainX, posLaneX, bottomY, topY, ongoing), COLORS.position, ongoing);
     });
 
-    // Certifications: unchanged — a spot on main with a straight connector.
+    // Certifications: a single point in time, so no branch — just a dot
+    // directly on the main line with a straight connector out to the card.
     var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'certification'; });
 
@@ -238,7 +255,8 @@ document.addEventListener('DOMContentLoaded', function () {
       addDot(mainX, y, COLORS.certification);
     });
 
-    // Projects: same card-center treatment as positions.
+    // Projects: grouped by consecutive same-month, same branch/merge
+    // treatment as positions, running through each card's own center.
     var projRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'project'; });
 

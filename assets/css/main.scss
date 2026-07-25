@@ -12,7 +12,9 @@ $gl-position: #1F8A55;
 $gl-certification: #C98A2B;
 $gl-project: #3457D5;
 $gl-muted: #8A9199;
+$gl-faint: #A0AFAF;
 $gl-hairline: #E3E4E0;
+$gl-main: #4F46E5;
 $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 
 .gitlog {
@@ -32,7 +34,7 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   margin: 0 0 6px 0;
 
   .prompt {
-    color: $gl-position;
+    color: $gl-main;
     margin-right: 6px;
   }
 }
@@ -64,6 +66,7 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   display: inline-block;
 }
 
+.dot-main { background: $gl-main; }
 .dot-position { background: $gl-position; }
 .dot-certification { background: $gl-certification; }
 .dot-project { background: $gl-project; }
@@ -109,16 +112,23 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 }
 
 .gl-card {
+  position: relative;
   width: 36%;
   background: white;
   border: 1px solid $gl-hairline;
   border-radius: 6px;
-  padding: 14px 16px;
+  padding: 9px 12px;
+  transition: border-color 0.15s ease;
+}
+
+.gl-card:hover,
+.gl-card:focus-within {
+  border-color: $gl-ink;
 }
 
 .gl-pos { border-left: 3px solid $gl-position; border-radius: 0 6px 6px 0; }
-.gl-certification { border-right: 3px solid $gl-certification; border-radius: 6px 0 0 6px; }
-.gl-project { border-right: 3px solid $gl-project; border-radius: 6px 0 0 6px; }
+.gl-certification { border-left: 3px solid $gl-certification; border-radius: 0 6px 6px 0; }
+.gl-project { border-left: 3px solid $gl-project; border-radius: 0 6px 6px 0; }
 
 .gl-link {
   text-decoration: none;
@@ -129,19 +139,20 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 .gl-meta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-family: $gl-mono;
-  font-size: 0.75em;
+  font-size: 0.68em;
   color: $gl-muted;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
   flex-wrap: wrap;
 }
 
 .gl-badge {
-  padding: 1px 7px;
-  border-radius: 10px;
+  padding: 0 6px;
+  border-radius: 8px;
   color: white;
   text-transform: lowercase;
+  line-height: 1.5;
 }
 
 .badge-position { background: $gl-position; }
@@ -149,30 +160,75 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 .badge-project { background: $gl-project; }
 
 .gl-title {
-  margin: 0 0 4px 0;
+  margin: 0;
+  font-size: 0.9em;
+  font-weight: 500;
   color: $gl-ink;
+  line-height: 1.3;
 }
 
 .gl-org {
-  margin: 0 0 8px 0;
+  margin: 2px 0 0;
+  font-size: 0.78em;
   color: $gl-muted;
-  font-size: 0.9em;
-  font-weight: 500;
+  font-weight: 400;
+}
+
+.gl-tags-compact {
+  display: flex;
+  gap: 4px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+
+/* Expanded hover/focus detail: absolutely positioned so it never affects
+   row height or layout — critical, since branch curves are measured from
+   rendered row positions on every draw() call. */
+.gl-hover-detail {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: -1px;
+  background: white;
+  border: 1px solid $gl-ink;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 8px 12px 10px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 5;
+}
+
+.gl-card:hover .gl-hover-detail,
+.gl-card:focus-within .gl-hover-detail {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.gl-detail-location {
+  color: $gl-faint;
+  font-size: 0.8em;
+  margin: 0 0 4px;
 }
 
 .gl-preview {
   color: #4A4F54;
-  font-size: 0.9em;
+  font-size: 0.85em;
   line-height: 1.5;
-  margin: 8px 0;
+  margin: 4px 0;
 }
 
 .gl-chips {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   font-family: $gl-mono;
-  font-size: 0.75em;
-  margin: 6px 0;
+  font-size: 0.72em;
+  margin: 4px 0;
 }
 
 .gl-chip {
@@ -186,20 +242,28 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 .gl-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 10px;
+  gap: 4px;
+  margin: 6px 0;
 }
 
 .gl-tag {
   font-family: $gl-mono;
-  font-size: 0.72em;
-  padding: 2px 7px;
+  font-size: 0.68em;
+  padding: 1px 6px;
   border-radius: 4px;
 }
 
 .tag-position { background: rgba(31, 138, 85, 0.08); color: $gl-position; border: 1px solid rgba(31, 138, 85, 0.25); }
 .tag-certification { background: rgba(201, 138, 43, 0.08); color: $gl-certification; border: 1px solid rgba(201, 138, 43, 0.25); }
 .tag-project { background: rgba(52, 87, 213, 0.08); color: $gl-project; border: 1px solid rgba(52, 87, 213, 0.25); }
+
+.gl-more {
+  display: block;
+  font-family: $gl-mono;
+  font-size: 0.7em;
+  color: $gl-muted;
+  margin-top: 4px;
+}
 
 @media (max-width: 768px) {
   .gitlog-svg { display: none; }
@@ -218,7 +282,6 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   .gl-certification,
   .gl-project {
     border-left: 3px solid currentColor;
-    border-right: none;
     border-radius: 0 6px 6px 0;
   }
 }
