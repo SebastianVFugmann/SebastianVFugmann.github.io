@@ -210,6 +210,19 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   pointer-events: auto;
 }
 
+/* When the card is near the bottom of the viewport, flip the panel to
+   open upward instead of downward, so it stays fully visible. */
+.gl-card.gl-flip-up .gl-hover-detail {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: -1px;
+  border-top: 1px solid $gl-ink;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  transform: translateY(6px);
+}
+
 .gl-detail-location {
   color: $gl-faint;
   font-size: 0.8em;

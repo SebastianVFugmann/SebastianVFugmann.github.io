@@ -279,6 +279,32 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   draw();
+
+  // Flip the hover-detail panel above the card instead of below when there
+  // isn't enough viewport space beneath it — otherwise the last row (and any
+  // row near the bottom of the screen) gets clipped or pushes a scrollbar in.
+  function setupHoverFlip() {
+    var cards = rail.querySelectorAll('.gl-card');
+    cards.forEach(function (card) {
+      var detail = card.querySelector('.gl-hover-detail');
+      if (!detail) return;
+
+      function check() {
+        card.classList.remove('gl-flip-up');
+        var rect = card.getBoundingClientRect();
+        var neededSpace = detail.scrollHeight + 16;
+        var spaceBelow = window.innerHeight - rect.bottom;
+        if (spaceBelow < neededSpace) {
+          card.classList.add('gl-flip-up');
+        }
+      }
+
+      card.addEventListener('mouseenter', check);
+      card.addEventListener('focusin', check);
+    });
+  }
+  setupHoverFlip();
+
   var resizeTimer;
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
