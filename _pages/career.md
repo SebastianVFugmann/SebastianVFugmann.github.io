@@ -216,6 +216,14 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
+    // Places a commit dot just below a card, still on the given lane's x —
+    // so it reads as sitting on that item's branch, not floating separately.
+    function addCommitDot(laneX, rowIdx, color) {
+      var cardHeight = rows[rowIdx].getBoundingClientRect().height;
+      var y = centers[rowIdx] + cardHeight / 2 + 10;
+      addDot(laneX, y, color);
+    }
+
     // Positions: consecutive same-company positions (ignoring non-position
     // rows in between) merge into one branch with multiple commits inside
     // it. Branch runs through each card's own center; the current role, if
@@ -242,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up', rows);
 
       addPath(branchPath(mainX, posLaneX, bottomY, topY, ongoing), COLORS.position, ongoing);
+      g.rows.forEach(function (rowIdx) { addCommitDot(posLaneX, rowIdx, COLORS.position); });
     });
 
     // Certifications: a single point in time, so no branch — just a dot
@@ -275,10 +284,37 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = boundaryY(centers, topIdx, 'up', rows);
 
       addPath(branchPath(mainX, accLaneX, bottomY, topY, false), COLORS.project, false);
+      g.rows.forEach(function (rowIdx) { addCommitDot(accLaneX, rowIdx, COLORS.project); });
     });
   }
 
   draw();
+
+  // Flip the hover-detail panel above the card instead of below when there
+  // isn't enough viewport space beneath it — otherwise the last row (and any
+  // row near the bottom of the screen) gets clipped or pushes a scrollbar in.
+  function setupHoverFlip() {
+    var cards = rail.querySelectorAll('.gl-card');
+    cards.forEach(function (card) {
+      var detail = card.querySelector('.gl-hover-detail');
+      if (!detail) return;
+
+      function check() {
+        card.classList.remove('gl-flip-up');
+        var rect = card.getBoundingClientRect();
+        var neededSpace = detail.scrollHeight + 16;
+        var spaceBelow = window.innerHeight - rect.bottom;
+        if (spaceBelow < neededSpace) {
+          card.classList.add('gl-flip-up');
+        }
+      }
+
+      card.addEventListener('mouseenter', check);
+      card.addEventListener('focusin', check);
+    });
+  }
+  setupHoverFlip();
+
   var resizeTimer;
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
