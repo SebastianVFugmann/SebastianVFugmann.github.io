@@ -216,6 +216,14 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
+    // Places a commit dot just below a card, still on the given lane's x —
+    // so it reads as sitting on that item's branch, not floating separately.
+    function addCommitDot(laneX, rowIdx, color) {
+      var cardHeight = rows[rowIdx].getBoundingClientRect().height;
+      var y = centers[rowIdx] + cardHeight / 2 + 10;
+      addDot(laneX, y, color);
+    }
+
     // Positions: consecutive same-company positions (ignoring non-position
     // rows in between) merge into one branch with multiple commits inside
     // it. Branch runs through each card's own center; the current role, if
@@ -242,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up', rows);
 
       addPath(branchPath(mainX, posLaneX, bottomY, topY, ongoing), COLORS.position, ongoing);
+      g.rows.forEach(function (rowIdx) { addCommitDot(posLaneX, rowIdx, COLORS.position); });
     });
 
     // Certifications: a single point in time, so no branch — just a dot
@@ -275,6 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var topY = boundaryY(centers, topIdx, 'up', rows);
 
       addPath(branchPath(mainX, accLaneX, bottomY, topY, false), COLORS.project, false);
+      g.rows.forEach(function (rowIdx) { addCommitDot(accLaneX, rowIdx, COLORS.project); });
     });
   }
 
