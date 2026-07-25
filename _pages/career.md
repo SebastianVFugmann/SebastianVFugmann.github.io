@@ -216,12 +216,15 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
-    // Places a commit dot just below a card, still on the given lane's x —
-    // so it reads as sitting on that item's branch, not floating separately.
+    // Places a commit dot below a card, still on the given lane's x — so it
+    // reads as sitting on that item's branch, not floating separately.
     function addCommitDot(laneX, rowIdx, color) {
       var cardHeight = rows[rowIdx].getBoundingClientRect().height;
-      var y = centers[rowIdx] + cardHeight / 2 + 10;
-      addDot(laneX, y, color);
+      var y = centers[rowIdx] + cardHeight / 2 + 26;
+      var c = ns('circle');
+      c.setAttribute('cx', laneX); c.setAttribute('cy', y); c.setAttribute('r', 9);
+      c.setAttribute('fill', color);
+      svg.appendChild(c);
     }
 
     // Positions: consecutive same-company positions (ignoring non-position
