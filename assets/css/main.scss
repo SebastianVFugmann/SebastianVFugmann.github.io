@@ -8,13 +8,9 @@
 
 $gl-paper: #F7F7F5;
 $gl-ink: #14171A;
-$gl-position: #1F8A55;
-$gl-certification: #C98A2B;
-$gl-project: #3457D5;
 $gl-muted: #8A9199;
 $gl-faint: #A0AFAF;
 $gl-hairline: #E3E4E0;
-$gl-main: #4F46E5;
 $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 
 .gitlog {
@@ -34,7 +30,7 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   margin: 0 0 6px 0;
 
   .prompt {
-    color: $gl-main;
+    color: $gl-ink;
     margin-right: 6px;
   }
 }
@@ -52,24 +48,6 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   font-size: 0.8em;
   color: $gl-muted;
 }
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.legend-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.dot-main { background: $gl-main; }
-.dot-position { background: $gl-position; }
-.dot-certification { background: $gl-certification; }
-.dot-project { background: $gl-project; }
 
 .gitlog-empty {
   font-family: $gl-mono;
@@ -115,7 +93,7 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   position: relative;
   width: 36%;
   background: white;
-  border: 1px solid $gl-hairline;
+  border: 1px solid $gl-ink;
   border-radius: 6px;
   padding: 9px 12px;
   transition: border-color 0.15s ease;
@@ -123,12 +101,8 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 
 .gl-card:hover,
 .gl-card:focus-within {
-  border-color: $gl-ink;
+  border-color: $gl-muted;
 }
-
-.gl-pos { border-left: 3px solid $gl-position; border-radius: 0 6px 6px 0; }
-.gl-certification { border-left: 3px solid $gl-certification; border-radius: 0 6px 6px 0; }
-.gl-project { border-left: 3px solid $gl-project; border-radius: 0 6px 6px 0; }
 
 .gl-link {
   text-decoration: none;
@@ -150,14 +124,11 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 .gl-badge {
   padding: 0 6px;
   border-radius: 8px;
+  background: $gl-ink;
   color: white;
   text-transform: lowercase;
   line-height: 1.5;
 }
-
-.badge-position { background: $gl-position; }
-.badge-certification { background: $gl-certification; }
-.badge-project { background: $gl-project; }
 
 .gl-title {
   margin: 0;
@@ -264,11 +235,10 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   font-size: 0.68em;
   padding: 1px 6px;
   border-radius: 4px;
+  background: $gl-paper;
+  color: $gl-muted;
+  border: 1px solid $gl-hairline;
 }
-
-.tag-position { background: rgba(31, 138, 85, 0.08); color: $gl-position; border: 1px solid rgba(31, 138, 85, 0.25); }
-.tag-certification { background: rgba(201, 138, 43, 0.08); color: $gl-certification; border: 1px solid rgba(201, 138, 43, 0.25); }
-.tag-project { background: rgba(52, 87, 213, 0.08); color: $gl-project; border: 1px solid rgba(52, 87, 213, 0.25); }
 
 .gl-more {
   display: block;
@@ -289,12 +259,5 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 
   .gl-card {
     width: 100%;
-  }
-
-  .gl-pos,
-  .gl-certification,
-  .gl-project {
-    border-left: 3px solid currentColor;
-    border-radius: 0 6px 6px 0;
   }
 }

@@ -12,10 +12,9 @@ classes: wide
     <p class="gitlog-branch"><span class="prompt">$</span> git log --graph --all</p>
     <h1>Career Timeline</h1>
     <div class="gitlog-legend">
-      <span class="legend-item"><span class="legend-dot dot-main"></span>main</span>
-      <span class="legend-item"><span class="legend-dot dot-position"></span>position</span>
-      <span class="legend-item"><span class="legend-dot dot-certification"></span>certification</span>
-      <span class="legend-item"><span class="legend-dot dot-project"></span>project</span>
+      <span class="legend-item">— branch = position or project</span>
+      <span class="legend-item">● on main = certification</span>
+      <span class="legend-item">● colored = a distinct branch</span>
     </div>
   </div>
 
@@ -35,17 +34,17 @@ classes: wide
             {% assign end_epoch = "" %}
             {% if item.end_date %}{% assign end_epoch = item.end_date | date: '%s' %}{% endif %}
             <li class="gl-row" data-type="position" data-start="{{ start_epoch }}" data-end="{{ end_epoch }}" data-month="{{ month_key }}" data-company="{{ item.company }}">
-              <div class="gl-card gl-pos">
+              <div class="gl-card">
                 <a class="gl-link" href="{{ item.url | relative_url }}">
                   <div class="gl-meta">
-                    <span class="gl-badge badge-position">position</span>
+                    <span class="gl-badge">position</span>
                     <span class="gl-date">{{ item.date | date: "%b %Y" }}{% if item.end_date %} – {{ item.end_date | date: "%b %Y" }}{% else %} – present{% endif %}</span>
                   </div>
                   <p class="gl-title">{{ item.title }}</p>
                   <p class="gl-org">{{ item.company }}</p>
                   {% if item.tags %}
                     <div class="gl-tags-compact">
-                      {% for tag in item.tags limit: 3 %}<span class="gl-tag tag-position">{{ tag }}</span>{% endfor %}
+                      {% for tag in item.tags limit: 3 %}<span class="gl-tag">{{ tag }}</span>{% endfor %}
                     </div>
                   {% endif %}
                   <div class="gl-hover-detail">
@@ -53,7 +52,7 @@ classes: wide
                     <p class="gl-preview">{{ item.content | strip_html | truncatewords: 24 }}</p>
                     {% if item.tags.size > 3 %}
                       <div class="gl-tags">
-                        {% for tag in item.tags offset: 3 %}<span class="gl-tag tag-position">{{ tag }}</span>{% endfor %}
+                        {% for tag in item.tags offset: 3 %}<span class="gl-tag">{{ tag }}</span>{% endfor %}
                       </div>
                     {% endif %}
                     <span class="gl-more">Click for full details →</span>
@@ -63,17 +62,17 @@ classes: wide
             </li>
           {% else %}
             <li class="gl-row" data-type="{{ item.type }}" data-start="{{ start_epoch }}" data-month="{{ month_key }}">
-              <div class="gl-card gl-acc gl-{{ item.type }}">
+              <div class="gl-card">
                 <a class="gl-link" href="{{ item.url | relative_url }}">
                   <div class="gl-meta">
-                    <span class="gl-badge badge-{{ item.type }}">{{ item.type }}</span>
+                    <span class="gl-badge">{{ item.type }}</span>
                     <span class="gl-date">{{ item.date | date: "%b %Y" }}</span>
                   </div>
                   <p class="gl-title">{{ item.title }}</p>
                   {% if item.organization %}<p class="gl-org">{{ item.organization }}</p>{% endif %}
                   {% if item.skills %}
                     <div class="gl-tags-compact">
-                      {% for skill in item.skills limit: 3 %}<span class="gl-tag tag-{{ item.type }}">{{ skill }}</span>{% endfor %}
+                      {% for skill in item.skills limit: 3 %}<span class="gl-tag">{{ skill }}</span>{% endfor %}
                     </div>
                   {% endif %}
                   <div class="gl-hover-detail">
@@ -92,7 +91,7 @@ classes: wide
                     <p class="gl-preview">{{ item.content | strip_html | truncatewords: 20 }}</p>
                     {% if item.skills.size > 3 %}
                       <div class="gl-tags">
-                        {% for skill in item.skills offset: 3 %}<span class="gl-tag tag-{{ item.type }}">{{ skill }}</span>{% endfor %}
+                        {% for skill in item.skills offset: 3 %}<span class="gl-tag">{{ skill }}</span>{% endfor %}
                       </div>
                     {% endif %}
                     <span class="gl-more">Click for full details →</span>
@@ -114,8 +113,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var svg = document.getElementById('gitlog-svg');
   if (!rail || !svg) return;
 
-  var MAIN_COLOR = '#4F46E5';
-  var COLORS = { position: '#1F8A55', certification: '#C98A2B', project: '#3457D5' };
+  var INK = '#14171A';
+  var PALETTE = ['#059669', '#D97706', '#0891B2', '#C026D3', '#65A30D'];
+  // Add more hex values here any time — everything below reads from this
+  // one array, so nothing else needs to change to make use of a new color.
+
+  function nextColor(i) { return PALETTE[i % PALETTE.length]; }
+
   var RADIUS = 16;
   var DOT_OFFSET = 26;
   var DOT_RADIUS = 9;
@@ -127,8 +131,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Boundary = midpoint between a row and its immediate neighbor (quick
   // branch-out / merge points). For rows with no neighbor (first/last in
-  // the whole list), clear past that row's own rendered height instead of
-  // guessing a fixed offset, so the curve never cuts through the card.
+  // the whole list), clear past that row's own rendered height plus the
+  // commit dot's footprint, so the curve never cuts through the card or
+  // leaves the bottommost dot floating off the line.
   function boundaryY(centers, idx, dir, rows) {
     if (dir === 'up') {
       if (idx > 0) return (centers[idx] + centers[idx - 1]) / 2;
@@ -156,7 +161,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!rows.length) return;
 
     // Reserve enough space above/below the rail so the very first and last
-    // card's branch curves have room to bend before hitting the SVG edge.
+    // card's branch curves — and their commit dots — have room to render
+    // before hitting the SVG edge.
     var firstH = rows[0].getBoundingClientRect().height;
     var lastH = rows[rows.length - 1].getBoundingClientRect().height;
     var topPad = Math.ceil(firstH / 2 + DOT_CLEARANCE + 8);
@@ -189,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var mainLine = ns('line');
     mainLine.setAttribute('x1', mainX); mainLine.setAttribute('x2', mainX);
     mainLine.setAttribute('y1', 0); mainLine.setAttribute('y2', height);
-    mainLine.setAttribute('stroke', MAIN_COLOR);
+    mainLine.setAttribute('stroke', INK);
     mainLine.setAttribute('stroke-width', 3);
     svg.appendChild(mainLine);
 
@@ -219,8 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
-    // Places a commit dot below a card, still on the given lane's x — so it
-    // reads as sitting on that item's branch, not floating separately.
+    // Places a larger commit dot below a card, still on the given lane's
+    // x — so it reads as sitting on that item's branch.
     function addCommitDot(laneX, rowIdx, color) {
       var cardHeight = rows[rowIdx].getBoundingClientRect().height;
       var y = centers[rowIdx] + cardHeight / 2 + DOT_OFFSET;
@@ -230,10 +236,21 @@ document.addEventListener('DOMContentLoaded', function () {
       svg.appendChild(c);
     }
 
+    // Certifications: a single point in time, not a branch — a neutral dot
+    // directly on the main line with a straight connector out to the card.
+    var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
+      .filter(function (o) { return o.r.dataset.type === 'certification'; });
+
+    certRows.forEach(function (o) {
+      var y = centers[o.i];
+      addLine(mainX, y, certConnectorX, y, INK);
+      addDot(mainX, y, INK);
+    });
+
     // Positions: consecutive same-company positions (ignoring non-position
     // rows in between) merge into one branch with multiple commits inside
-    // it. Branch runs through each card's own center; the current role, if
-    // it has no end date, stays open with a dashed line to the top (HEAD).
+    // it. The current role, if it has no end date, stays open with a
+    // dashed line to the top (HEAD).
     var positions = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'position'; });
 
@@ -242,63 +259,53 @@ document.addEventListener('DOMContentLoaded', function () {
       var company = o.r.dataset.company;
       var last = posGroups[posGroups.length - 1];
       if (last && last.company === company) { last.rows.push(o.i); }
-      else posGroups.push({ company: company, rows: [o.i] });
-    });
-
-    posGroups.forEach(function (g, gi) {
-      var bottomIdx = g.rows[g.rows.length - 1];
-      var topIdx = g.rows[0];
-      var bottomY = boundaryY(centers, bottomIdx, 'down', rows);
-
-      var topRow = rows[topIdx];
-      var isNewestGroup = gi === 0;
-      var ongoing = isNewestGroup && topRow.dataset.end === '';
-      var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up', rows);
-
-      addPath(branchPath(mainX, posLaneX, bottomY, topY, ongoing), COLORS.position, ongoing);
-      g.rows.forEach(function (rowIdx) { addCommitDot(posLaneX, rowIdx, COLORS.position); });
-    });
-
-    // Certifications: a single point in time, so no branch — just a dot
-    // directly on the main line with a straight connector out to the card.
-    var certRows = rows.map(function (r, i) { return { r: r, i: i }; })
-      .filter(function (o) { return o.r.dataset.type === 'certification'; });
-
-    certRows.forEach(function (o) {
-      var y = centers[o.i];
-      addLine(mainX, y, certConnectorX, y, COLORS.certification);
-      addDot(mainX, y, COLORS.certification);
+      else posGroups.push({ kind: 'position', rows: [o.i] });
     });
 
     // Projects: grouped by consecutive same-month, same branch/merge
-    // treatment as positions, running through each card's own center.
+    // treatment as positions.
     var projRows = rows.map(function (r, i) { return { r: r, i: i }; })
       .filter(function (o) { return o.r.dataset.type === 'project'; });
 
-    var groups = [];
+    var projGroups = [];
     projRows.forEach(function (o) {
       var month = o.r.dataset.month;
-      var last = groups[groups.length - 1];
+      var last = projGroups[projGroups.length - 1];
       if (last && last.month === month) { last.rows.push(o.i); }
-      else groups.push({ month: month, rows: [o.i] });
+      else projGroups.push({ kind: 'project', rows: [o.i] });
     });
 
-    groups.forEach(function (g) {
+    // One combined list, sorted by earliest row (= chronological, newest
+    // first), so palette assignment reflects true encounter order across
+    // both lanes rather than two independent counters.
+    var allGroups = posGroups.concat(projGroups).sort(function (a, b) {
+      return a.rows[0] - b.rows[0];
+    });
+
+    var newestPositionIdx = allGroups.findIndex(function (g) { return g.kind === 'position'; });
+
+    allGroups.forEach(function (g, idx) {
+      var color = nextColor(idx);
       var bottomIdx = g.rows[g.rows.length - 1];
       var topIdx = g.rows[0];
       var bottomY = boundaryY(centers, bottomIdx, 'down', rows);
-      var topY = boundaryY(centers, topIdx, 'up', rows);
 
-      addPath(branchPath(mainX, accLaneX, bottomY, topY, false), COLORS.project, false);
-      g.rows.forEach(function (rowIdx) { addCommitDot(accLaneX, rowIdx, COLORS.project); });
+      var laneX = g.kind === 'position' ? posLaneX : accLaneX;
+      var topRow = rows[topIdx];
+      var ongoing = g.kind === 'position' && idx === newestPositionIdx && topRow.dataset.end === '';
+      var topY = ongoing ? 0 : boundaryY(centers, topIdx, 'up', rows);
+
+      addPath(branchPath(mainX, laneX, bottomY, topY, ongoing), INK, ongoing);
+      g.rows.forEach(function (rowIdx) { addCommitDot(laneX, rowIdx, color); });
     });
   }
 
   draw();
 
   // Flip the hover-detail panel above the card instead of below when there
-  // isn't enough viewport space beneath it — otherwise the last row (and any
-  // row near the bottom of the screen) gets clipped or pushes a scrollbar in.
+  // isn't enough viewport space beneath it — otherwise the last row (and
+  // any row near the bottom of the screen) gets clipped or pushes in a
+  // scrollbar.
   function setupHoverFlip() {
     var cards = rail.querySelectorAll('.gl-card');
     cards.forEach(function (card) {
