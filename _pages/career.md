@@ -195,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // merging out the top — rather than beside it with a separate stub.
     var posLaneX = (width * CARD_FRAC) / 2;
     var accLaneX = width - (width * CARD_FRAC) / 2;
-    var certConnectorX = width * (1 - CARD_FRAC) - (width * GAP_FRAC);
 
     var mainLine = ns('line');
     mainLine.setAttribute('x1', mainX); mainLine.setAttribute('x2', mainX);
@@ -248,7 +247,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     certRows.forEach(function (o) {
       var y = centers[o.i];
-      addLine(mainX, y, certConnectorX, y, INK);
+      var cardRect = o.r.getBoundingClientRect();
+      var certCardX = (cardRect.left - railRect.left) + cardRect.width / 2;  // ← get actual card center
+      addLine(mainX, y, certCardX, y, INK);
       addDot(mainX, y, INK);
     });
 
