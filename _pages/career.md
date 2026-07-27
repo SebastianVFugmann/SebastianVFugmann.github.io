@@ -117,6 +117,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var MAIN_COLOR = '#4F46E5';
   var COLORS = { position: '#1F8A55', certification: '#C98A2B', project: '#3457D5' };
   var RADIUS = 16;
+  var DOT_OFFSET = 26;
+  var DOT_RADIUS = 9;
+  var DOT_CLEARANCE = DOT_OFFSET + DOT_RADIUS + RADIUS * 2 + 12;
   var CARD_FRAC = 0.36;  // must match $gl-card width in main.scss
   var GAP_FRAC = 0.05;
 
@@ -130,11 +133,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (dir === 'up') {
       if (idx > 0) return (centers[idx] + centers[idx - 1]) / 2;
       var halfUp = rows[idx].getBoundingClientRect().height / 2;
-      return centers[idx] - halfUp - RADIUS * 2 - 16;
+      return centers[idx] - halfUp - DOT_CLEARANCE;
     }
     if (idx < centers.length - 1) return (centers[idx] + centers[idx + 1]) / 2;
     var halfDown = rows[idx].getBoundingClientRect().height / 2;
-    return centers[idx] + halfDown + RADIUS * 2 + 16;
+    return centers[idx] + halfDown + DOT_CLEARANCE;
   }
 
   function branchPath(mainX, laneX, bottomY, topY, open) {
@@ -156,8 +159,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // card's branch curves have room to bend before hitting the SVG edge.
     var firstH = rows[0].getBoundingClientRect().height;
     var lastH = rows[rows.length - 1].getBoundingClientRect().height;
-    var topPad = Math.ceil(firstH / 2 + RADIUS * 2 + 24);
-    var bottomPad = Math.ceil(lastH / 2 + RADIUS * 2 + 24);
+    var topPad = Math.ceil(firstH / 2 + DOT_CLEARANCE + 8);
+    var bottomPad = Math.ceil(lastH / 2 + DOT_CLEARANCE + 8);
     rail.style.paddingTop = topPad + 'px';
     rail.style.paddingBottom = bottomPad + 'px';
 
@@ -220,9 +223,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // reads as sitting on that item's branch, not floating separately.
     function addCommitDot(laneX, rowIdx, color) {
       var cardHeight = rows[rowIdx].getBoundingClientRect().height;
-      var y = centers[rowIdx] + cardHeight / 2 + 26;
+      var y = centers[rowIdx] + cardHeight / 2 + DOT_OFFSET;
       var c = ns('circle');
-      c.setAttribute('cx', laneX); c.setAttribute('cy', y); c.setAttribute('r', 9);
+      c.setAttribute('cx', laneX); c.setAttribute('cy', y); c.setAttribute('r', DOT_RADIUS);
       c.setAttribute('fill', color);
       svg.appendChild(c);
     }
