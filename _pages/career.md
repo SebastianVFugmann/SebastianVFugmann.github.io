@@ -10,7 +10,6 @@ classes: wide
 
   <div class="gitlog-header">
     <p class="gitlog-branch"><span class="prompt">$</span> git log --graph --all</p>
-    <h1>Career Timeline</h1>
     <div class="gitlog-legend">
       <span class="legend-item">— branch = position or project</span>
       <span class="legend-item">● on main = certification</span>
@@ -136,11 +135,17 @@ document.addEventListener('DOMContentLoaded', function () {
   // leaves the bottommost dot floating off the line.
   function boundaryY(centers, idx, dir, rows) {
     if (dir === 'up') {
-      if (idx > 0) return (centers[idx] + centers[idx - 1]) / 2;
+      if (idx > 0) {
+        var halfHeight = rows[idx].getBoundingClientRect().height / 2;
+        return centers[idx] - halfHeight - DOT_OFFSET;  // ← extend below card
+      }
       var halfUp = rows[idx].getBoundingClientRect().height / 2;
       return centers[idx] - halfUp - DOT_CLEARANCE;
     }
-    if (idx < centers.length - 1) return (centers[idx] + centers[idx + 1]) / 2;
+    if (idx < centers.length - 1) {
+      var halfHeight = rows[idx].getBoundingClientRect().height / 2;
+      return centers[idx] + halfHeight + DOT_OFFSET;  // ← extend below card
+    }
     var halfDown = rows[idx].getBoundingClientRect().height / 2;
     return centers[idx] + halfDown + DOT_CLEARANCE;
   }
@@ -220,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function addDot(x, y, color) {
       var c = ns('circle');
-      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 5);
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', DOT_RADIUS);
       c.setAttribute('fill', color);
       svg.appendChild(c);
     }
@@ -259,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var company = o.r.dataset.company;
       var last = posGroups[posGroups.length - 1];
       if (last && last.company === company) { last.rows.push(o.i); }
-      else posGroups.push({ kind: 'position', rows: [o.i] });
+      else posGroups.push({ kind: 'position', company: company, rows: [o.i] });
     });
 
     // Projects: grouped by consecutive same-month, same branch/merge
