@@ -135,11 +135,17 @@ document.addEventListener('DOMContentLoaded', function () {
   // leaves the bottommost dot floating off the line.
   function boundaryY(centers, idx, dir, rows) {
     if (dir === 'up') {
-      if (idx > 0) return (centers[idx] + centers[idx - 1]) / 2;
+      if (idx > 0) {
+        var halfHeight = rows[idx].getBoundingClientRect().height / 2;
+        return centers[idx] - halfHeight - DOT_OFFSET;  // ← extend below card
+      }
       var halfUp = rows[idx].getBoundingClientRect().height / 2;
       return centers[idx] - halfUp - DOT_CLEARANCE;
     }
-    if (idx < centers.length - 1) return (centers[idx] + centers[idx + 1]) / 2;
+    if (idx < centers.length - 1) {
+      var halfHeight = rows[idx].getBoundingClientRect().height / 2;
+      return centers[idx] + halfHeight + DOT_OFFSET;  // ← extend below card
+    }
     var halfDown = rows[idx].getBoundingClientRect().height / 2;
     return centers[idx] + halfDown + DOT_CLEARANCE;
   }
