@@ -10,7 +10,6 @@ classes: wide
 
   <div class="gitlog-header">
     <p class="gitlog-branch"><span class="prompt">$</span> git log --graph --all</p>
-    <h1>Career Timeline</h1>
     <div class="gitlog-legend">
       <span class="legend-item">— branch = position or project</span>
       <span class="legend-item">● on main = certification</span>
