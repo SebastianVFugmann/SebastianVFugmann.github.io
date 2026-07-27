@@ -247,8 +247,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     certRows.forEach(function (o) {
       var y = centers[o.i];
-      var cardRect = o.r.getBoundingClientRect();
-      var certCardX = (cardRect.left - railRect.left) + cardRect.width / 2;  // ← get actual card center
+      var cardRect = o.r.querySelector('.gl-card').getBoundingClientRect();
+      var bodyRect = body.getBoundingClientRect();
+      var certCardX = (cardRect.left - bodyRect.left) + cardRect.width / 2;
       addLine(mainX, y, certCardX, y, INK);
       addDot(mainX, y, INK);
     });
