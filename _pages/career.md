@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var company = o.r.dataset.company;
       var last = posGroups[posGroups.length - 1];
       if (last && last.company === company) { last.rows.push(o.i); }
-      else posGroups.push({ kind: 'position', rows: [o.i] });
+      else posGroups.push({ kind: 'position', company: company, rows: [o.i] });
     });
 
     // Projects: grouped by consecutive same-month, same branch/merge
