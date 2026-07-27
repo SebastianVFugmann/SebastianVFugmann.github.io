@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function addDot(x, y, color) {
       var c = ns('circle');
-      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 5);
+      c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', DOT_RADIUS);
       c.setAttribute('fill', color);
       svg.appendChild(c);
     }
