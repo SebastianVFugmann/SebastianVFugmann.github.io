@@ -9,14 +9,14 @@ open_to_opportunities: true # Toggle this to false to hide the "open to opportun
 
 <div class="about-hero">
   <p class="about-tagline">
-    Software Developer specializing in the <strong>Salesforce ecosystem</strong> — including
-    <strong>Sales Cloud</strong> and <strong>Marketing Cloud</strong> — with <strong>3 years</strong> of experience
-    building and configuring solutions on the platform for a variety of business areas.
+    Software Developer with <strong>3 years</strong> professional experience working as a consultant within the <strong>Salesforce</strong> and <strong>.NET</strong> ecosystems — including:
+    <strong>Salesforce</strong>: <strong>Sales Cloud</strong> and <strong>Marketing Cloud</strong> — building and configuring solutions on the platform for a variety of business areas, including customer support, client engagement, and contract management.
+    <strong>.NET</strong>: <strong>C#</strong> and <strong>React</strong> - Maintaining and improving a variety of custom .NET solutions, including access control and RESTful API services.
   </p>
   <p class="about-quickfacts">
     📍 Denmark &nbsp;·&nbsp;
     💼 3 years experience &nbsp;·&nbsp;
-    🛠️ Salesforce · Sales Cloud · Marketing Cloud
+    🛠️ .NET · Salesforce · Mobile App Development
     {% if page.open_to_opportunities %}
     &nbsp;·&nbsp;<span class="about-badge">✅ Open to new opportunities</span>
     {% endif %}
@@ -34,20 +34,26 @@ Salesforce expertise and take on more ownership. Open to **[target role/domain]*
 
 ## Core Competencies
 
-**Salesforce**
-`Sales Cloud` `Marketing Cloud` `Apex` `Flow` `SOQL` `[...]`
-
 **Languages**
-`Python` `JavaScript` `[...]`
+`C#` `Java` `Kotlin` `JavaScript` `SQL`
 
 **Frameworks & Tools**
-`React` `Node.js` `Jekyll` `[...]`
+`.NET` `React` `Node.js` `Jekyll`
+
+**Databases & Data Stores**
+`PostgreSQL` `Microsoft SQL Server`
 
 **Infrastructure & Cloud**
-`AWS` `[...]`
+`Docker`
 
-**Domain Knowledge**
-`[e.g. B2B sales operations, marketing automation — remove if not applicable]`
+**CI/CD & DevOps**
+`Azure Pipelines`
+
+**Testing & Quality Assurance**
+`TDD`
+
+**Salesforce**
+`Sales Cloud` `Marketing Cloud` `Apex` `Flow` `SOQL` `Trigger` `LWC`
 
 ## Highlighted Work
 
@@ -74,4 +80,4 @@ Salesforce expertise and take on more ownership. Open to **[target role/domain]*
 - 🔗 **GitHub:** [github.com/SebastianVFugmann](https://github.com/SebastianVFugmann)
 - 💼 **LinkedIn:** [linkedin.com/in/sebastian-fugmann](https://www.linkedin.com/in/sebastian-fugmann-ab224a226/)
 - ✉️ **Email:** [sf15006@gmail.com](mailto:sf15006@gmail.com)
-- 📄 **[Download CV (PDF)](/assets/files/cv-sebastian-fugmann.pdf)** <!-- add the file, or remove this line if not available yet -->
+- 📄 **[Download CV (PDF)](/assets/files/cv-sebastian-fugmann.pdf)** <!-- TODO: Add CV as PDF -->
