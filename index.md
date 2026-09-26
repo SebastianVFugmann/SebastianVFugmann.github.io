@@ -6,16 +6,18 @@ permalink: /
 author_profile: true
 open_to_opportunities: true # Toggle this to false to hide the "open to opportunities" badge
 ---
+{% assign start_seconds = site.career_start_date | date: "%s" %}
+{% assign now_seconds = site.time | date: "%s" %}
+{% assign seconds_of_experience = now_seconds | minus: start_seconds %}
+{% assign years_of_experience = seconds_of_experience | divided_by: 31556952 %}
 
 <div class="about-hero">
   <p class="about-tagline">
-    Software Developer with <strong>3 years</strong> professional experience working as a consultant within the <strong>Salesforce</strong> and <strong>.NET</strong> ecosystems — including:
-    <strong>Salesforce</strong>: <strong>Sales Cloud</strong> and <strong>Marketing Cloud</strong> — building and configuring solutions on the platform for a variety of business areas, including customer support, client engagement, and contract management.
-    <strong>.NET</strong>: <strong>C#</strong> and <strong>React</strong> - Maintaining and improving a variety of custom .NET solutions, including access control and RESTful API services.
+    Full-stack, software developer with <strong>{{ years_of_experience }} years</strong> professional experience working as a consultant within the <strong>Salesforce</strong> and <strong>.NET</strong> ecosystems.
   </p>
   <p class="about-quickfacts">
     📍 Denmark &nbsp;·&nbsp;
-    💼 3 years experience &nbsp;·&nbsp;
+    💼 {{ years_of_experience }} years experience &nbsp;·&nbsp;
     🛠️ .NET · Salesforce · Mobile App Development
     {% if page.open_to_opportunities %}
     &nbsp;·&nbsp;<span class="about-badge">✅ Open to new opportunities</span>
@@ -25,12 +27,12 @@ open_to_opportunities: true # Toggle this to false to hide the "open to opportun
 
 ## Summary
 
-I'm an IT consultant and software developer with 3 years of experience working in the **Salesforce ecosystem**,
-including **Sales Cloud** and **Marketing Cloud**. I focus on configuring and building solutions that fit how
-a business actually works, and on keeping things maintainable as requirements evolve. I'm still early in my
-career and growing my scope with every project — currently looking for roles where I can keep deepening my
-Salesforce expertise and take on more ownership. Open to **[target role/domain]**, ideally
-**[remote/hybrid/onsite, Denmark/EU/etc.]**.
+I focus on configuring and building solutions that are scalable and maintainable. In my years as a consultant I have grown fond of working alongside the end-users to figure out what solutions fit their needs the best. I have experience across both frontend and backend, which lets me have deep discussions with end-users about usability. This helps me avoid over-complicating functionality.
+I have worked with a range of businesses across different business areas, making me adept at quickly understanding business requirements and constraints.
+I'm still early in my career and growing my competencies with every project. I enjoy tackling new tech stacks or challenges, which improves my overall abilities as a developer and as a deliverer of systems.
+{% if page.open_to_opportunities %}
+I am open to both generalist and specialist roles, both internally and as a consultant, ideally within the larger Copenhagen area.
+{% endif %}
 
 ## Core Competencies
 
