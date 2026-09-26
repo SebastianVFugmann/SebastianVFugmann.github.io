@@ -28,8 +28,11 @@ open_to_opportunities: true # Toggle this to false to hide the "open to opportun
 ## Summary
 
 I focus on configuring and building solutions that are scalable and maintainable. In my years as a consultant I have grown fond of working alongside the end-users to figure out what solutions fit their needs the best. I have experience across both frontend and backend, which lets me have deep discussions with end-users about usability. This helps me avoid over-complicating functionality.
+
 I have worked with a range of businesses across different business areas, making me adept at quickly understanding business requirements and constraints.
+
 I'm still early in my career and growing my competencies with every project. I enjoy tackling new tech stacks or challenges, which improves my overall abilities as a developer and as a deliverer of systems.
+
 {% if page.open_to_opportunities %}
 I am open to both generalist and specialist roles, both internally and as a consultant, ideally within the larger Copenhagen area.
 {% endif %}
