@@ -96,19 +96,19 @@ defaults:
       layout: single
       author_profile: true # Shows author sidebar on all pages
   - scope:
-      path: "_positions"
+      path: "_collections/_positions"
       type: positions
     values:
       layout: position-item
       type: "position"
   - scope:
-      path: "_certifications"
+      path: "_collections/_certifications"
       type: certifications
     values:
       layout: certification-item
       type: "certification"
   - scope:
-      path: "_projects"
+      path: "_collections/_projects"
       type: projects
     values:
       layout: project-item
