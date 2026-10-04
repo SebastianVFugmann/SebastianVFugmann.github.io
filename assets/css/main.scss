@@ -281,8 +281,9 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 }
 
 .career-item__logo {
-  height: 80px;          // change this one value to resize every logo
+  height: 120px;          // change this one value to resize every logo
   width: auto;
+  margin-left: auto;
   max-width: 100%;
   object-fit: contain;
   flex-shrink: 0;
