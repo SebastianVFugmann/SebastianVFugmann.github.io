@@ -33,10 +33,10 @@ layout: default
 
         <div class="career-item__meta" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.85em; color: #6f777d;">
 
-          {% if page.date_start %}
+          {% if page.date %}
             <span class="career-item__dates">
               <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-              {{ page.date_start }}
+              {{ page.date }}
               &ndash;
               {% if page.date_end %}{{ page.date_end }}{% else %}Present{% endif %}
             </span>
