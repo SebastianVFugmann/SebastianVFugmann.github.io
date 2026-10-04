@@ -20,7 +20,7 @@ github_username: SebastianVFugmann
 career_start_date: "2023-08-01" # Date when career started, used for calculating experience duration
   
 # Theme Configuration
-remote_theme: mmistakes/minimal-mistakes
+remote_theme: mmistakes/minimal-mistakes@4.28.1
 minimal_mistakes_skin: default # Professional appearance
 search: true # Enables site search functionality
   
