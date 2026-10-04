@@ -261,3 +261,55 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
     width: 100%;
   }
 }
+
+/* ---------- Position page header ---------- */
+
+.career-item__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.career-item__title {
+  margin: 0;
+}
+
+.career-item__company {
+  font-weight: normal;
+  color: $link-color;
+}
+
+.career-item__logo {
+  height: 80px;          // change this one value to resize every logo
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.career-item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.85em;
+  color: #6f777d;
+}
+
+.career-item__tags {
+  margin-bottom: 1.5rem;
+}
+
+.career-item__tag {
+  display: inline-block;
+  background: #f2f3f3;
+  border-radius: 3px;
+  padding: 0.15em 0.6em;
+  margin: 0.2em;
+  font-size: 0.8em;
+}
+
+@media (max-width: 768px) {
+  .career-item__logo { height: 56px; }
+}

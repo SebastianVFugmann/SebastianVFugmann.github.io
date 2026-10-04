@@ -13,30 +13,28 @@ layout: default
     <div class="page__inner-wrap">
 
       <header>
-
-        <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-          <h1 id="page-title" class="page__title" itemprop="headline" style="margin: 0;">
+        <div class="career-item__header">
+          <h1 id="page-title" class="page__title career-item__title" itemprop="headline">
             {{ page.title }}
             {% if page.company %}
-              <span style="font-weight: normal; color: var(--global-link-color, #0092ca);">@ {{ page.company }}</span>
+              <span class="career-item__company">@ {{ page.company }}</span>
             {% endif %}
           </h1>
 
           {% if page.company_logo %}
-            <img src="{{ page.company_logo }}"
-                 alt="{% if page.company %}{{ page.company }} logo{% else %}Company logo{% endif %}"
-                 style="height: 48px; width: auto; object-fit: contain; flex-shrink: 0;">
+            <img class="career-item__logo"
+                 src="{{ page.company_logo | relative_url }}"
+                 alt="{% if page.company %}{{ page.company }} logo{% else %}Company logo{% endif %}">
           {% endif %}
         </div>
 
-        <div class="career-item__meta" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.85em; color: #6f777d;">
-
+        <div class="career-item__meta">
           {% if page.date %}
             <span class="career-item__dates">
               <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-              {{ page.date }}
+              {{ page.date | date: "%b %Y" }}
               &ndash;
-              {% if page.date_end %}{{ page.date_end }}{% else %}Present{% endif %}
+              {% if page.end_date %}{{ page.end_date | date: "%b %Y" }}{% else %}Present{% endif %}
             </span>
           {% endif %}
 
@@ -53,13 +51,12 @@ layout: default
               {{ page.employment_type }}
             </span>
           {% endif %}
-
         </div>
 
         {% if page.tags and page.tags.size > 0 %}
-          <div class="career-item__tags" style="margin-bottom: 1.5rem;">
+          <div class="career-item__tags">
             {% for tag in page.tags %}
-              <span style="display: inline-block; background: #f2f3f3; border-radius: 3px; padding: 0.15em 0.6em; margin: 0.2em; font-size: 0.8em;">{{ tag }}</span>
+              <span class="career-item__tag">{{ tag }}</span>
             {% endfor %}
           </div>
         {% endif %}
@@ -77,5 +74,4 @@ layout: default
 
     </div>
   </article>
-
 </div>
