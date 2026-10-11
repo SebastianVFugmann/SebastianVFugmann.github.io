@@ -54,9 +54,6 @@ layout: single
         <i class="fas fa-fw fa-external-link-alt" aria-hidden="true"></i> Verify credential
       </a>
     {% endif %}
-    {% if status == 'expired' and page.renewal_url %}
-      <a class="btn btn--inverse" href="{{ page.renewal_url }}" target="_blank" rel="noopener noreferrer">Renewal info</a>
-    {% endif %}
     <a class="btn btn--inverse" href="{{ '/career/' | relative_url }}">
       <i class="fas fa-fw fa-code-branch" aria-hidden="true"></i> Career timeline
     </a>
@@ -65,8 +62,7 @@ layout: single
 
 {{ content }}
 
-{%- comment -%} Posts that reference this certification via `certifications:` front matter {%- endcomment -%}
-{%- assign related_posts = site.posts | where_exp: "post", "post.certifications contains page.slug" -%}
+{%- assign related_posts = site.posts | where_exp: "post", "post.related contains page.slug" -%}
 {%- if related_posts.size > 0 -%}
   <section class="cert-related">
     <h2>Related posts</h2>
