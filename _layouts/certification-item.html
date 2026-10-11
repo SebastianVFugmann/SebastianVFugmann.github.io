@@ -1,0 +1,65 @@
+---
+layout: single
+---
+{%- assign now_epoch = site.time | date: '%s' | plus: 0 -%}
+{%- assign status = 'no-expiry' -%}
+{%- if page.expiry_date and page.expiry_date != '' -%}
+  {%- assign expiry_epoch = page.expiry_date | date: '%s' | plus: 0 -%}
+  {%- if expiry_epoch < now_epoch -%}
+    {%- assign status = 'expired' -%}
+  {%- else -%}
+    {%- assign status = 'active' -%}
+  {%- endif -%}
+{%- endif -%}
+
+<div class="cert-card cert-{{ status }}">
+  <div class="cert-card__header">
+    {% if page.badge_image %}
+      <img class="cert-card__badge" src="{{ page.badge_image | relative_url }}" alt="{{ page.title }} badge">
+    {% else %}
+      <i class="fas fa-certificate cert-card__fallback" aria-hidden="true"></i>
+    {% endif %}
+    <div class="cert-card__id">
+      {% if page.organization %}<p class="cert-card__org">{{ page.organization }}</p>{% endif %}
+      {% if page.level %}<p class="cert-card__sub">{{ page.level }}</p>{% endif %}
+    </div>
+    <span class="cert-card__status">
+      {% case status %}
+        {% when 'active' %}Active
+        {% when 'expired' %}Expired
+        {% else %}No expiry
+      {% endcase %}
+    </span>
+  </div>
+
+  <dl class="cert-card__facts">
+    <div><dt>Issued</dt><dd>{{ page.date | date: "%B %Y" }}</dd></div>
+    {% if page.expiry_date and page.expiry_date != '' %}
+      <div><dt>{% if status == 'expired' %}Expired{% else %}Expires{% endif %}</dt><dd>{{ page.expiry_date | date: "%B %Y" }}</dd></div>
+    {% endif %}
+    {% if page.credential_id %}
+      <div><dt>Credential ID</dt><dd><code>{{ page.credential_id }}</code></dd></div>
+    {% endif %}
+  </dl>
+
+  {% if page.skills and page.skills.size > 0 %}
+    <ul class="cert-card__skills" aria-label="Skills covered">
+      {% for skill in page.skills %}<li>{{ skill }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <div class="cert-card__actions">
+    {% if page.credential_url and page.credential_url != '' %}
+      <a class="btn btn--primary" href="{{ page.credential_url }}" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-fw fa-external-link-alt" aria-hidden="true"></i> Verify credential
+      </a>
+    {% endif %}
+    <a class="btn btn--inverse" href="{{ '/career/' | relative_url }}">
+      <i class="fas fa-fw fa-code-branch" aria-hidden="true"></i> Career timeline
+    </a>
+  </div>
+</div>
+
+{{ content }}
+
+{% include related-posts.html %}
