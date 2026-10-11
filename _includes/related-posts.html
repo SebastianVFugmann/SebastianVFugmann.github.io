@@ -1,0 +1,22 @@
+{%- comment -%}
+  Lists posts that link to the current page via `related:` front matter.
+  Usage:  {% include related-posts.html %}
+          {% include related-posts.html heading="Posts about this role" %}
+  A post links to a page with:  related: [file-name-without-extension, ...]
+  Outputs nothing when no posts match.
+{%- endcomment -%}
+{%- assign related_heading = include.heading | default: "Related posts" -%}
+{%- assign related_posts = site.posts | where_exp: "post", "post.related contains page.slug" -%}
+{%- if related_posts.size > 0 -%}
+  <section class="related-posts">
+    <h2>{{ related_heading }}</h2>
+    <ul>
+      {% for post in related_posts %}
+        <li>
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          <span class="related-posts__date">{{ post.date | date: "%b %Y" }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{%- endif -%}

@@ -421,7 +421,9 @@ $cert-expired: #B91C1C;
   }
 }
 
-.cert-related__date {
+/* ---------- Related posts (shared include) ---------- */
+
+.related-posts__date {
   color: $gl-muted;
   font-size: 0.85em;
   margin-left: 6px;

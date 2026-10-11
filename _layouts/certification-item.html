@@ -62,17 +62,4 @@ layout: single
 
 {{ content }}
 
-{%- assign related_posts = site.posts | where_exp: "post", "post.related contains page.slug" -%}
-{%- if related_posts.size > 0 -%}
-  <section class="cert-related">
-    <h2>Related posts</h2>
-    <ul>
-      {% for post in related_posts %}
-        <li>
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-          <span class="cert-related__date">{{ post.date | date: "%b %Y" }}</span>
-        </li>
-      {% endfor %}
-    </ul>
-  </section>
-{%- endif -%}
+{% include related-posts.html %}
