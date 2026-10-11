@@ -314,3 +314,115 @@ $gl-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
 @media (max-width: 768px) {
   .career-item__logo { height: 56px; }
 }
+
+/* ---------- Certification page ---------- */
+/* Paste at the bottom of main.scss. Reuses the $gl-* variables defined
+   for the career timeline, so it must come after them. */
+
+$cert-active: #059669;
+$cert-expired: #B91C1C;
+
+.cert-card {
+  border: 1px solid $gl-ink;
+  border-radius: 6px;
+  background: white;
+  padding: 16px 20px;
+  margin: 0 0 2em;
+}
+
+.cert-card__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cert-card__id {
+  flex: 1;
+}
+
+.cert-card__badge {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.cert-card__fallback {
+  font-size: 2em;
+  color: $gl-ink;
+}
+
+.cert-card__org {
+  margin: 0;
+  font-weight: 600;
+}
+
+.cert-card__sub {
+  margin: 0;
+  font-size: 0.85em;
+  color: $gl-muted;
+}
+
+.cert-card__status {
+  font-family: $gl-mono;
+  font-size: 0.75em;
+  padding: 2px 10px;
+  border-radius: 10px;
+  background: $gl-ink;
+  color: white;
+}
+
+.cert-active .cert-card__status { background: $cert-active; }
+.cert-expired .cert-card__status { background: $cert-expired; }
+
+.cert-card__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  margin: 16px 0 0;
+
+  dt {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $gl-muted;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+.cert-card__skills {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+    font-family: $gl-mono;
+    font-size: 0.72em;
+    padding: 1px 8px;
+    border: 1px solid $gl-hairline;
+    border-radius: 4px;
+    background: $gl-paper;
+    color: #4A4F54;
+  }
+}
+
+.cert-card__actions {
+  margin-top: 16px;
+
+  .btn {
+    margin: 0 6px 6px 0;
+  }
+}
+
+.cert-related__date {
+  color: $gl-muted;
+  font-size: 0.85em;
+  margin-left: 6px;
+}
